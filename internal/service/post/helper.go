@@ -6,32 +6,38 @@ import (
 	"unicode"
 )
 
-func ValidatePost(post model.Post) error {
+func validateGraded(grade model.Grade) error {
+	return nil
+}
+
+func validatePost(post model.Post) error {
 	for _, ch := range post.CategoryId {
 		if ch > 4 || ch <= 0 {
-			log.Print("here1")
 			return model.ErrInvalidPostData
 		}
 	}
 
 	if post.Name == "" {
-		log.Print("here2")
 		return model.ErrInvalidPostData
 	}
 
 	if post.Text == "" {
-		log.Print("here3")
 		return model.ErrInvalidPostData
 	}
 
 	for _, ch := range post.Text {
 		if ch > unicode.MaxASCII {
-			log.Print("here4")
 			return model.ErrInvalidPostData
 		}
 	}
 
-	// maybe some other form of validations will be here
+	seen := make(map[string]bool)
+	for _, str := range post.Category {
+		if _, ok := seen[str]; ok {
+			return model.ErrInvalidPostData
+		}
+		seen[str] = true
+	}
 
 	return nil
 }

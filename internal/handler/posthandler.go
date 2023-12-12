@@ -66,7 +66,7 @@ func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
 			ErrorHandler(w, http.StatusInternalServerError)
 			return
 		}
-		// fix it
+
 		user, err := h.service.Auth.GetUserBySession(session.Value)
 		if err != nil {
 			log.Print("WTF again")
@@ -74,7 +74,6 @@ func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// here we need to get ids, from input. move this logic to service if want
 		categories := r.Form["categories[]"]
 
 		category, err := h.service.Poster.GetCategoryByName(categories)
@@ -93,7 +92,7 @@ func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if err := h.service.Poster.CreatePost(post); err != nil {
-			if err == model.ErrInvalidPostData {
+			if err == model.ErrInvalidPostData || strings.Contains(err.Error(), "UNIQUE constraint failed") {
 				log.Print(err)
 				ErrorHandler(w, http.StatusBadRequest)
 				return
@@ -141,7 +140,7 @@ func (h *Handler) getpost(w http.ResponseWriter, r *http.Request) {
 		id, err := strconv.Atoi(idstr)
 		if err != nil {
 			log.Print(err)
-			ErrorHandler(w, http.StatusInternalServerError)
+			ErrorHandler(w, http.StatusNotFound)
 			return
 		}
 		session, err := r.Cookie("session")
@@ -168,7 +167,10 @@ func (h *Handler) getpost(w http.ResponseWriter, r *http.Request) {
 		}
 		post, err := h.service.GetPostById(idstr)
 		if err != nil {
-			log.Print(err)
+			if err == model.ErrInvalidId {
+				ErrorHandler(w, http.StatusNotFound)
+				return
+			}
 			ErrorHandler(w, http.StatusInternalServerError)
 			return
 		}
@@ -211,7 +213,7 @@ func (h *Handler) addgrade(w http.ResponseWriter, r *http.Request) {
 		postId, err := strconv.Atoi(r.FormValue("post_id"))
 		if err != nil {
 			log.Print(err)
-			ErrorHandler(w, http.StatusInternalServerError)
+			ErrorHandler(w, http.StatusNotFound)
 			return
 		}
 		commentId, _ := strconv.Atoi(r.FormValue("comment_id"))
@@ -231,11 +233,14 @@ func (h *Handler) addgrade(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if err := h.service.Poster.AddGrade(grade); err != nil {
-			if err == model.ErrAlreadyGraded {
+			if err == model.ErrUnspecifiedId || strings.Contains(err.Error(), "GradeValue IN (-1, 1)") {
 				log.Print(err)
-				ErrorHandler(w, http.StatusConflict)
+				ErrorHandler(w, http.StatusBadRequest)
 				return
 			}
+			log.Print(err)
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
 		}
 
 		path := "/posts/" + r.FormValue("post_id")

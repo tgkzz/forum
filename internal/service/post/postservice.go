@@ -27,8 +27,12 @@ func NewPostService(repo post.Post) *PostService {
 	}
 }
 
-// add logic for comment
+// TODO: write logic to validate grade
 func (p *PostService) AddGrade(grade model.Grade) error {
+	// if err := validateGrade(grade); err != nil {
+	// 	return err
+	// }
+
 	switch {
 	case grade.PostId != 0 && grade.CommentId == 0:
 		if err := p.repo.AddGradeToPost(grade); err != nil {
@@ -92,7 +96,7 @@ func (p *PostService) GetCategoryByName(strings []string) ([]int, error) {
 
 	for _, str := range strings {
 		if num, ok := category[str]; !ok {
-			return []int{}, model.ErrInvalidData
+			return []int{}, model.ErrInvalidPostData
 		} else {
 			res = append(res, num)
 		}
@@ -112,7 +116,7 @@ func (p *PostService) GetAllPost() ([]model.Post, error) {
 }
 
 func (p *PostService) CreatePost(post model.Post) error {
-	if err := ValidatePost(post); err != nil {
+	if err := validatePost(post); err != nil {
 		return err
 	}
 
