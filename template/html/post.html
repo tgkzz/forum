@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{.Name}}</title>
+    <!-- <link rel="stylesheet" href="/template/css/normilize.css"> -->
+    <link rel="stylesheet" href="/template/css/posts.css">
+</head>
+<body>
+    <div class="container2">
+    <canvas id="canvas">Canvas not supported.</canvas>
+    <div id="filter"></div>
+    <header class="header">
+        <a class="header__link" href="/">Back</a>
+        <h1 class="header-title">Cinema Forum</h1>
+      
+    </header>
+
+    <main class="main container">
+        <div class="card">
+            <div class="card-descr">
+                <h1 class="title">{{.Name}}</h1>
+                <p class="card-text">{{.Text}}</p>
+                <p class="time">{{.FormattedTime}}</p>
+            </div>
+
+            <div class="card-categories">
+                <h2>Categories</h2>
+                <ul>
+                    {{range .Category}}
+                    <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+
+            <div class="likes">
+                <span>
+                    <form method="POST" action="/posts/likes">
+                      <input type="hidden" name="post_id" value={{.Id}}>
+                      <input type="hidden" name="status" value="1">
+                      <button type="submit"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true">{{.Likes}}&#128077;</i></button>
+                    </form>
+                  </span>
+                <span>
+                    <form method="POST" action="/posts/likes">
+                        <input type="hidden" name="post_id" value={{.Id}}>
+                        <input type="hidden" name="status" value="-1">
+                        <button type="submit"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true">{{.Dislikes}} &#128078;</i></button>
+                      </form>
+                </span>
+            </div>            
+            <div class="card-comments">
+                <h2>Comments</h2>
+                {{range .Comment}}
+                    <div class="comment">
+                        <p>{{.Username}}</p>
+                        <p>{{.Text}}</p>
+
+                    <div class="likes">
+                <span>
+                    <form method="POST" action="/posts/likes">
+                      <input type="hidden" name="comment_id" value={{.Id}}>
+                      <input type="hidden" name="post_id" value={{.PostId}}>
+                      <input type="hidden" name="status" value="1">
+                      <button type="submit"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true">&#128077;{{.Likes}}</i></button>
+                    </form>
+                  </span>
+                <span>
+                    <form method="POST" action="/posts/likes">
+                        <input type="hidden" name="comment_id" value={{.Id}}>
+                        <input type="hidden" name="post_id" value={{.PostId}}>
+                        <input type="hidden" name="status" value="-1">
+                        <button type="submit"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"> &#128078;{{.Dislikes}}</i></button>
+                      </form>
+                </span>
+            </div>
+                        <br>
+                    </div>
+                {{end}}
+            </div>
+            </div>
+            <div class="card-postcomment">
+                <form action="/posts/{{.Id}}" method="POST">
+                    <label for="text"><b>text</b></label>
+                    <input type="text" placeholder="Enter comment" name="text" id="text" required>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    </main>
+
+    <!-- <footer class="footer">
+        <p class="footer-text">Cinema Forum © 2023</p>
+    </footer> -->
+    <script src="/template/js/script.js"></script>
+</body>
+</html>

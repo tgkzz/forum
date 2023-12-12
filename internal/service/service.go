@@ -1,16 +1,22 @@
 package service
-
+//worked in database, problem in post
 import (
-	"forum/internal/repo"
+	"forum/internal/repository"
 	authService "forum/internal/service/auth"
+	healthService "forum/internal/service/health"
+	postService "forum/internal/service/post"
 )
 
 type Service struct {
-	authService.AuthService
+	authService.Auth
+	healthService.Healther
+	postService.Poster
 }
 
-func NewService(repo *repo.Repo) *Service {
+func NewService(repo *repository.Repository) *Service {
 	return &Service{
-		AuthService: *authService.NewAuthService(repo),
+		Auth:     authService.NewAuthorizationService(repo.Authorization),
+		Healther: healthService.NewHealthService(repo.Health),
+		Poster:   postService.NewPostService(repo.Post),
 	}
 }

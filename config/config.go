@@ -23,11 +23,9 @@ func OpenConfig() (Config, error) {
 		return Config{}, err
 	}
 	defer configFile.Close()
-
 	var config Config
 	if err = json.NewDecoder(configFile).Decode(&config); err != nil {
 		return Config{}, err
 	}
-
 	return config, nil
 }

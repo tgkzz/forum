@@ -1,0 +1,160 @@
+/* Общие стили */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial Black', Helvetica, Verdana, monospace, sans-serif;
+    letter-spacing: 0.2rem;
+    color: #fff;
+    overflow: hidden;
+}
+
+canvas#canvas {
+    display: block;
+    background: #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+#filter {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.header {
+    background-color: rgba(51, 51, 51, 0.438); /* Полупрозрачный фон шапки */
+    /* text-align: center; */
+    position: fixed;
+    width: 100%;
+    top: 0;
+    right: 0;
+    height: 50px;
+    
+}
+
+.header-title {
+    font-size: 1.4rem;
+    color: #fff;
+    margin-top: -10px; 
+    text-align: center;
+    
+
+}
+
+.header__link {
+    text-decoration: none;
+    color: #fff;
+    margin: 0 20px;
+    font-size: 1rem; 
+   
+}
+
+.header__link:hover {
+    text-decoration: underline;
+}
+
+
+/* Стили для формы .form-create */
+.container {
+    max-width: 1200px;
+    width: 50%;
+    margin: 100px auto;
+    padding: 20px;
+    background: rgba(48, 45, 45, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #fff;
+}
+
+.form-create {
+    width: 100%;
+}
+
+.form-create fieldset {
+    border: none;
+}
+
+.form-create legend {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+/* Стилизация чекбоксов */
+.checkbox-inline {
+    margin-right: 10px;
+    color: #fff;
+}
+
+/* Стилизация полей ввода и текстовых областей */
+.form-control {
+    background: #fff;
+    color: #333;
+    border-radius: 10px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Стилизация кнопок */
+.form-create .btn {
+    background-color: #46494a;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-create .btn:hover {
+    background-color: #d0d0d0;
+    color: #060606;
+}
+
+/* Стили для предупреждающего сообщения */
+.alert-warning {
+    background-color: #ffdddd;
+    color: red;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+/* Базовые стили кнопки */
+.btn {
+    padding: 10px 15px;
+    background-color: #46494a;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    outline: none;
+    font-size: 15px;
+}
+
+/* Анимация при наведении */
+.btn:hover {
+    background-color: #d0d0d0;
+    color: #060606;
+    transform: scale(1.05);
+}
+
+/* Анимация при нажатии */
+.btn:active {
+    transform: scale(0.95);
+}
+.form-group, .form-control, .btn {
+    margin-bottom: 15px;
+}

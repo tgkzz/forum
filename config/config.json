@@ -3,7 +3,7 @@
     "Port": ":4000",
     "DB":{
         "DriverName" : "sqlite3",
-        "DataSourceName" : "/forum.db",
-        "Sql" : "/Sql/tables.sql"
+        "DataSourceName" : "./forum.db",
+        "Sql" : "./sql/init.sql"
     }
 }
