@@ -60,10 +60,14 @@ func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		session := strings.Split(r.Header.Get("Cookie"), "session=")
-
+		session, err := r.Cookie("session")
+		if err != nil {
+			log.Print(err)
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
+		}
 		// fix it
-		user, err := h.service.Auth.GetUserBySession(session[1])
+		user, err := h.service.Auth.GetUserBySession(session.Value)
 		if err != nil {
 			log.Print("WTF again")
 			ErrorHandler(w, http.StatusInternalServerError)
@@ -126,6 +130,7 @@ func (h *Handler) getpost(w http.ResponseWriter, r *http.Request) {
 			ErrorHandler(w, http.StatusInternalServerError)
 			return
 		}
+
 		if err := tmpl.Execute(w, res); err != nil {
 			log.Print(err)
 			ErrorHandler(w, http.StatusInternalServerError)

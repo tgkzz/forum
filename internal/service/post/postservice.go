@@ -35,7 +35,7 @@ func (p *PostService) AddGrade(grade model.Grade) error {
 			log.Printf("Error adding or updating grade: %v", err)
 			return err
 		}
-	case grade.CommentId != 0 && grade.PostId == 0:
+	case grade.CommentId != 0 && grade.PostId != 0:
 		if err := p.repo.AddGradeToComment(grade); err != nil {
 			return err
 		}
