@@ -16,4 +16,5 @@ var (
 	ErrAlreadyGraded     error = errors.New("post already graded by user")
 	ErrNoValue           error = errors.New("No value in grade or comment")
 	ErrUnspecifiedId     error = errors.New("specify either PostId or CommentId, not both")
+	ErrNoCategory        error = errors.New("no categories provided")
 )

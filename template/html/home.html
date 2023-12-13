@@ -28,6 +28,15 @@
     <div id="filter"></div>
     <div class="container1">
             <h1> Cinema Forum </h1>
+            <div class="filter">
+                <form action="/" method="post">
+                    <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Comedy">Comedy</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Horror">Horror</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Drama">Drama</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Other">Other</label>
+                    <input type="submit" class="btn btn-info" value="filter">
+                </form>
+            </div>
             <div class="main-post">
                     {{range .Post}}
                         <div class="card">

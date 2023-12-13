@@ -27,37 +27,36 @@ func ErrorHandler(w http.ResponseWriter, code int) {
 	}
 }
 
-// CRITICAL ERROR: AUTH SERVICE DOES NOT RECORD USERID + IT DELETES ALL RECORD ABOUT OTHER SESSION
-
 func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		ErrorHandler(w, http.StatusNotFound)
 		return
 	}
 
-	username := ""
-	session, err := r.Cookie("session")
-	if err == nil {
-		user, err := h.service.Auth.GetUserBySession(session.Value)
-		if err == nil {
-			username = user.Username
-		}
-	}
-
-	// small error: formatted time does not return to front
-	posts, err := h.service.Poster.GetAllPost()
-	if err != nil {
-		log.Print(err)
-		ErrorHandler(w, http.StatusInternalServerError)
-		return
-	}
-
-	result := map[string]interface{}{
-		"Post":     posts,
-		"Username": username,
-	}
 	switch r.Method {
 	case "GET":
+		username := ""
+		session, err := r.Cookie("session")
+		if err == nil {
+			user, err := h.service.Auth.GetUserBySession(session.Value)
+			if err == nil {
+				username = user.Username
+			}
+		}
+
+		// small error: formatted time does not return to front
+		posts, err := h.service.Poster.GetAllPost()
+		if err != nil {
+			log.Print(err)
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
+		}
+
+		result := map[string]interface{}{
+			"Post":     posts,
+			"Username": username,
+		}
+
 		tmpl, err := template.ParseFiles("template/html/home.html")
 		if err != nil {
 			log.Print(err)
@@ -70,7 +69,54 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 			ErrorHandler(w, http.StatusInternalServerError)
 			return
 		}
-		// fmt.Fprintf(w, "hello from home")
+	case "POST":
+		var user model.User
+		username := ""
+		session, err := r.Cookie("session")
+		if err == nil {
+			user, err = h.service.Auth.GetUserBySession(session.Value)
+			if err == nil {
+				username = user.Username
+			}
+		}
+
+		if err := r.ParseForm(); err != nil {
+			log.Print(err)
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
+		}
+		categories := r.Form["categories[]"]
+		if len(categories) == 0 || len(categories) == 4 {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+		}
+
+		category, err := h.service.Poster.GetCategoryByName(categories)
+		if err != nil {
+			log.Print(err)
+			ErrorHandler(w, http.StatusBadRequest)
+			return
+		}
+
+		posts, err := h.service.FilterByCategory(category)
+		if err != nil {
+			log.Print(err)
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
+		}
+
+		result := map[string]interface{}{
+			"Post":     posts,
+			"Username": username,
+		}
+		tmpl, err := template.ParseFiles("template/html/home.html")
+		if err != nil {
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
+		}
+		if err := tmpl.Execute(w, result); err != nil {
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
+		}
 	default:
 		ErrorHandler(w, http.StatusMethodNotAllowed)
 		return

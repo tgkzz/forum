@@ -11,6 +11,7 @@ type FilterService struct {
 
 type Filterer interface {
 	GetUserPosts(userId int) ([]model.Post, error)
+	FilterByCategory(categories []int) ([]model.Post, error)
 }
 
 func NewFilterService(repository filter.Filter) *FilterService {
@@ -27,4 +28,8 @@ func (f *FilterService) GetUserPosts(userId int) ([]model.Post, error) {
 	}
 
 	return posts, err
+}
+
+func (f *FilterService) FilterByCategory(categories []int) ([]model.Post, error) {
+	return f.repo.GetPostsByCategory(categories)
 }
