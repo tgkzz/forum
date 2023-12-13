@@ -13,6 +13,7 @@ type FilterRepo struct {
 type Filter interface {
 	GetUserPostsById(id int) ([]model.Post, error)
 	GetPostsByCategory(categories []int) ([]model.Post, error)
+	GetUsersLikedPost(userId int) ([]model.Post, error)
 }
 
 func NewFilterRepo(db *sql.DB) *FilterRepo {
@@ -97,4 +98,37 @@ func (f *FilterRepo) GetPostsByCategory(categories []int) ([]model.Post, error) 
 
 	return result, nil
 
+}
+
+func (f *FilterRepo) GetUsersLikedPost(userId int) ([]model.Post, error) {
+	query := `
+	SELECT p.Id, p.Name, p.Text, p.CreationTime, p.UserId, u.Username
+	FROM Post p
+	JOIN Users u ON p.UserId = u.Id
+	JOIN Grade g ON p.Id = g.PostId
+	WHERE g.UserId = $1 AND g.GradeValue = 1
+	`
+
+	result := []model.Post{}
+
+	rows, err := f.DB.Query(query, userId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var post model.Post
+		if err := rows.Scan(&post.Id, &post.Name, &post.Text, &post.CreationTime, &post.UserId, &post.Username); err != nil {
+			return nil, err
+		}
+
+		result = append(result, post)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }

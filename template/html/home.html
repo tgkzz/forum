@@ -15,9 +15,12 @@
             {{if .Username}}
                 <span class="header__username">Welcome, {{.Username}}</span>
                 <a href="/posts/create" class="button-link">Create Post</a>
+                <a href="/" class="button-link">All Posts</a>
                 <a href="/myposts" class="button-link">My Posts</a>
+                <a href="/likedposts" class="button-link">Liked Posts</a>
                 <a href="/signout" class="button-link">Signout</a>
             {{else}}
+                <a href="/" class="button-link">All Posts</a>
                 <a href="/signin" class="button-link">Log in</a>
                 <a href="/signup" class="button-link">Sign up</a>
             {{end}}

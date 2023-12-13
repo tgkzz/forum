@@ -26,6 +26,7 @@ func (h *Handler) Routes() http.Handler {
 	//filter handler
 	mux.HandleFunc("/filter", h.filterByCategory)
 	mux.HandleFunc("/myposts", h.AuthMiddleware(h.myposts))
+	mux.HandleFunc("/likedposts", h.AuthMiddleware(h.filterByLikes))
 
 	// post handler
 	mux.HandleFunc("/posts", h.allpost)
