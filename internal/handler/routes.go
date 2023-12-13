@@ -24,6 +24,7 @@ func (h *Handler) Routes() http.Handler {
 	mux.HandleFunc("/signout", h.AuthMiddleware(h.signout))
 
 	//filter handler
+	mux.HandleFunc("/filter", h.filterByCategory)
 	mux.HandleFunc("/myposts", h.AuthMiddleware(h.myposts))
 
 	// post handler
