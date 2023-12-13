@@ -10,38 +10,6 @@ import (
 	"time"
 )
 
-// add category display
-func (h *Handler) allpost(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/posts" {
-		ErrorHandler(w, http.StatusNotFound)
-		return
-	}
-
-	switch r.Method {
-	case "GET":
-		posts, err := h.service.Poster.GetAllPost()
-		if err != nil {
-			ErrorHandler(w, http.StatusInternalServerError)
-			return
-		}
-
-		tmpl, err := template.ParseFiles("/path/to/potential/post/html")
-		if err != nil {
-			log.Print("mistake will be here")
-			ErrorHandler(w, http.StatusInternalServerError)
-			return
-		}
-		if err := tmpl.Execute(w, posts); err != nil {
-			ErrorHandler(w, http.StatusInternalServerError)
-			return
-		}
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-	default:
-		ErrorHandler(w, http.StatusMethodNotAllowed)
-		return
-	}
-}
-
 func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":

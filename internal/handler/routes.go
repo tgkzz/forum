@@ -29,8 +29,6 @@ func (h *Handler) Routes() http.Handler {
 	mux.HandleFunc("/likedposts", h.AuthMiddleware(h.filterByLikes))
 
 	// post handler
-	mux.HandleFunc("/posts", h.allpost)
-	// routes to manipulate with post
 	mux.HandleFunc("/posts/", h.getpost)
 	mux.HandleFunc("/posts/create", h.AuthMiddleware(h.createpost))
 	mux.HandleFunc("/posts/likes", h.AuthMiddleware(h.addgrade))
