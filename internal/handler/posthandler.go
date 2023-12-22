@@ -1,23 +1,56 @@
 package handler
 
 import (
-	"forum/internal/model"
+	"html/template"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
-	"text/template"
 	"time"
+
+	"forum/internal/model"
 )
 
-func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
+// add category display
+func (h *Handler) allpost(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/posts" {
+		ErrorHandler(w, http.StatusNotFound)
+		return
+	}
+
 	switch r.Method {
 	case "GET":
-		tmpl, err := template.ParseFiles("template/html/createPost.html")
+		posts, err := h.service.Poster.GetAllPost()
 		if err != nil {
 			ErrorHandler(w, http.StatusInternalServerError)
 			return
 		}
+
+		tmpl, err := template.ParseFiles("/path/to/potential/post/html")
+		if err != nil {
+			log.Print("mistake will be here")
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
+		}
+		if err := tmpl.Execute(w, posts); err != nil {
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
+		}
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	default:
+		ErrorHandler(w, http.StatusMethodNotAllowed)
+		return
+	}
+}
+
+func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("template/html/createPost.html")
+	if err != nil {
+		ErrorHandler(w, http.StatusInternalServerError)
+		return
+	}
+	switch r.Method {
+	case "GET":
 		if err := tmpl.Execute(w, nil); err != nil {
 			ErrorHandler(w, http.StatusInternalServerError)
 			return
@@ -62,7 +95,8 @@ func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
 		if err := h.service.Poster.CreatePost(post); err != nil {
 			if err == model.ErrInvalidPostData || strings.Contains(err.Error(), "UNIQUE constraint failed") {
 				log.Print(err)
-				ErrorHandler(w, http.StatusBadRequest)
+				ClientErrorHandler(tmpl, w, err, http.StatusUnauthorized)
+				// ErrorHandler(w, http.StatusBadRequest)
 				return
 			} else {
 				log.Print(err)

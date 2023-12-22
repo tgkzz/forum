@@ -19,9 +19,12 @@
     <label for="username"><b>Username</b></label>
     <input type="username" placeholder="Enter username" name="username" id="username" required>
     <label for="email"><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" name="email" id="email" required>
+    <input type="email" placeholder="Enter Email" name="email" id="email" required>
+    <div class="error">{{ .ErrorText }}</div>
+
     <label for="password"><b>Password</b></label>
-    <input type="text" placeholder="Enter Password" name="password" id="password" required>
+    <input type="password" placeholder="Enter Password" name="password" id="password" required>
+    <div class="error">{{ .ErrorText }}</div>
     <button id="submitButton">Submit</button>
 </form>
 </div>

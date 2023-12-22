@@ -4,13 +4,15 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/errorStyle.css">
+ 
+    <link rel="stylesheet" href="/template/css/error.css">
     <title>{{.Text_err}}</title>
   </head>
   <body>
+    <canvas id="canvas">Canvas not supported.</canvas>
+    <div id="filter"></div>
     <nav class="navbar navbar-expand-lg custom-navbar navbar-dark">
-      <a class="navbar-brand" href="/">Groupie-tracker</a>
+      <a class="navbar-brand" href="/">Cinema Forum</a>
   </nav>
     <div class="container">
         <h1 class="text-center my-4 text-danger">Error {{.Code_err}}</h1>
@@ -21,5 +23,7 @@
             <a href="javascript:history.back()" class="btn btn-primary">Go back</a>
         </div>
     </div>
+       
+ <script src="/template/js/script.js"></script>
   </body>
 </html>

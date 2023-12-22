@@ -64,11 +64,14 @@ func (f *FilterRepo) GetPostsByCategory(categories []int) ([]model.Post, error) 
 	}
 
 	query := fmt.Sprintf(`
-	SELECT p.Id, p.Name, p.Text, p.CreationTime, p.UserId, u.Username
-	FROM Post p
-	JOIN Users u ON p.UserId = u.Id
-	JOIN PostCategory pc ON p.Id = pc.PostId
-	WHERE pc.CategoryId IN (%s)
+    SELECT p.Id, p.Name, p.Text, p.CreationTime, p.UserId, u.Username, 
+           GROUP_CONCAT(c.Name) as Categories
+    FROM Post p
+    JOIN Users u ON p.UserId = u.Id
+    JOIN PostCategory pc ON p.Id = pc.PostId
+    JOIN Category c ON pc.CategoryId = c.Id
+    WHERE pc.CategoryId IN (%s)
+    GROUP BY p.Id, p.Name, p.Text, p.CreationTime, p.UserId, u.Username
 	`, inParams)
 
 	args := make([]interface{}, len(categories))
@@ -85,7 +88,7 @@ func (f *FilterRepo) GetPostsByCategory(categories []int) ([]model.Post, error) 
 
 	for rows.Next() {
 		var post model.Post
-		if err := rows.Scan(&post.Id, &post.Name, &post.Text, &post.CreationTime, &post.UserId, &post.Username); err != nil {
+		if err := rows.Scan(&post.Id, &post.Name, &post.Text, &post.CreationTime, &post.UserId, &post.Username, &post.Categories); err != nil {
 			return nil, err
 		}
 
@@ -97,7 +100,6 @@ func (f *FilterRepo) GetPostsByCategory(categories []int) ([]model.Post, error) 
 	}
 
 	return result, nil
-
 }
 
 func (f *FilterRepo) GetUsersLikedPost(userId int) ([]model.Post, error) {

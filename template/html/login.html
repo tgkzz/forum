@@ -20,10 +20,9 @@
 <form action="/signin" method="post">
     <label for="username"><b>Username</b></label>
     <input type="username" placeholder="Enter username" name="username" id="username" required>
-   
-    
     <label for="password"><b>Password</b></label>
-    <input type="text" placeholder="Enter Password" name="psw" id="psw" required>
+    <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+    <div class="error">{{ .ErrorText }}</div>
     <button id="submitButton">Submit</button>
 </form>
 </div>

@@ -1,6 +1,6 @@
 package service
 
-//worked in database, problem in post
+// worked in database, problem in post
 import (
 	"forum/internal/repository"
 	authService "forum/internal/service/auth"

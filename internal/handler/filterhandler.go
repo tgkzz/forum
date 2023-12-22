@@ -20,7 +20,7 @@ func (h *Handler) myposts(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		//service part
+		// service part
 		posts, err := h.service.Filterer.GetUserPosts(user.Id)
 		if err != nil {
 			log.Print(err)

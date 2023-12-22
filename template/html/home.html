@@ -1,68 +1,67 @@
 <!DOCTYPE html>
-<html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/template/css/style.css">
     <title>Forum</title>
-   </head>
+</head>
+
 <body>
-    
+
     <header>
-      
+
         <nav>
             {{if .Username}}
-                <span class="header__username">Welcome, {{.Username}}</span>
-                <a href="/posts/create" class="button-link">Create Post</a>
-                <a href="/" class="button-link">All Posts</a>
-                <a href="/myposts" class="button-link">My Posts</a>
-                <a href="/likedposts" class="button-link">Liked Posts</a>
-                <a href="/signout" class="button-link">Signout</a>
+            <span class="header__username">Welcome, {{.Username}}</span>
+            <a href="/myposts" class="button-link">My Posts</a>
+            <a href="/posts/create" class="button-link">Create Post</a>
+            <a href="/likedposts" class="button-link">Liked Posts</a>
+            <a href="/signout" class="button-link">Signout</a>
             {{else}}
-                <a href="/" class="button-link">All Posts</a>
-                <a href="/signin" class="button-link">Log in</a>
-                <a href="/signup" class="button-link">Sign up</a>
+            <a href="/" class="button-link">All Posts</a>
+            <a href="/signin" class="button-link">Log in</a>
+            <a href="/signup" class="button-link">Sign up</a>
             {{end}}
         </nav>
     </header>
-   
+
     <canvas id="canvas">Canvas not supported.</canvas>
     <div id="filter"></div>
     <div class="container1">
-            <h1> Cinema Forum </h1>
-            <div class="filter">
-                <form action="/filter" method="get">
-                    <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Comedy">Comedy</label>
-                    <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Horror">Horror</label>
-                    <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Drama">Drama</label>
-                    <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Other">Other</label>
-                    <input type="submit" class="btn btn-info" value="filter">
-                </form>
-            </div>
-            <div class="main-post">
-                    {{range .Post}}
-                        <div class="card">
-                            <div class="container">
-                                <a href="/posts/{{.Id}}" >{{.Name}}</a>
-                                <p>Author: {{.Username}}</p>
-                                <p>Text: {{.Text}}</p>
-                                <p>TimeCreated: {{.CreationTime}}</p>
-                                
-                            </div>
-                        </div>
-                    {{end}}
-                  
-            </div>
+        <h1 class="mainTitle"><a href="/" style="text-decoration: none;">Cinema Forum</a></h1>
+        <div class="filters">
+            <form action="/filter" method="get">
+                <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Comedy">Comedy</label>
+                <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Horror">Horror</label>
+                <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Drama">Drama</label>
+                <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Other">Other</label>
+                <input type="submit" class="btn btn-info" value="filter">
+            </form>
         </div>
-   
- <script src="/template/js/script.js"></script>
+        <div class="main-post">
+            {{range .Post}}
+            <div class="card">
+                <div class="container">
+                    <a href="/posts/{{.Id}}">{{.Name}}</a>
+                    <p>Author: {{.Username}}</p>
+                    <p>Text: {{.Text}}</p>
+                    <p>TimeCreated: {{.CreationTime.Format "2006 Jan 02"}}</p>
 
-<!-- <footer class="footer">
+                </div>
+            </div>
+            {{end}}
+
+        </div>
+    </div>
+
+    <script src="/template/js/script.js"></script>
+
+    <!-- <footer class="footer">
     <p class="footer-text">Cinema Forum © 2023</p>
 </footer> -->
 
 </body>
-
 
 </html>

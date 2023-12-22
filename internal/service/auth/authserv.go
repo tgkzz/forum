@@ -52,7 +52,6 @@ func (s *AuthService) CreateUser(user model.User) error {
 
 func (s *AuthService) GetUserByUsername(username string) (model.User, error) {
 	user, err := s.repo.GetUserByUsername(username)
-
 	return user, err
 }
 

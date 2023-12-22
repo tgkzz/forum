@@ -1,11 +1,21 @@
 package auth
 
 import (
-	"forum/internal/model"
+	"log"
 	"regexp"
+
+	"forum/internal/model"
 )
 
 func dataValidation(user model.User) bool {
+	if !isEmailValid(user.Email) {
+		log.Print("asd")
+	}
+
+	if !isPasswordStrong(user.Email) {
+		log.Print("qwe")
+	}
+
 	if !isEmailValid(user.Email) || !isPasswordStrong(user.Password) {
 		return false
 	}
@@ -14,8 +24,8 @@ func dataValidation(user model.User) bool {
 }
 
 func isEmailValid(email string) bool {
-	emailRegex := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
-	return emailRegex.MatchString(email)
+	asd := regexp.MustCompile(`^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$`).MatchString(email)
+	return asd
 }
 
 func isPasswordStrong(password string) bool {

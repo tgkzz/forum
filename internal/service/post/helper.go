@@ -1,9 +1,12 @@
 package post
 
 import (
-	"forum/internal/model"
+	"fmt"
 	"log"
+	"strings"
 	"unicode"
+
+	"forum/internal/model"
 )
 
 func validateGraded(grade model.Grade) error {
@@ -13,20 +16,29 @@ func validateGraded(grade model.Grade) error {
 func validatePost(post model.Post) error {
 	for _, ch := range post.CategoryId {
 		if ch > 4 || ch <= 0 {
+			fmt.Println("")
+
 			return model.ErrInvalidPostData
 		}
 	}
+	post.Name = strings.TrimRight(post.Name, " ")
+	post.Text = strings.TrimRight(post.Text, " ")
 
 	if post.Name == "" {
+		fmt.Println("1")
 		return model.ErrInvalidPostData
 	}
 
 	if post.Text == "" {
+		fmt.Println("2")
+
 		return model.ErrInvalidPostData
 	}
 
 	for _, ch := range post.Text {
 		if ch > unicode.MaxASCII {
+			fmt.Println("3")
+
 			return model.ErrInvalidPostData
 		}
 	}
@@ -34,6 +46,8 @@ func validatePost(post model.Post) error {
 	seen := make(map[string]bool)
 	for _, str := range post.Category {
 		if _, ok := seen[str]; ok {
+			fmt.Println("4")
+
 			return model.ErrInvalidPostData
 		}
 		seen[str] = true

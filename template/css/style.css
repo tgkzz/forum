@@ -14,7 +14,6 @@ body {
   margin: 0;
   padding: 0;
   color: #fff;
-  overflow: hidden;
 }
 
 
@@ -103,6 +102,10 @@ button:hover {
   background-color: #46494a;
 }
 
+.btn-info {
+  color: #000;
+}
+
 header {
   position: fixed;
   top: 0;
@@ -125,16 +128,16 @@ header {
 
 .header__link:hover {
   text-decoration: underline;
-  background-color: #46494a; /* Цвет фона при наведении */
-  color: #d0d0d0; /* Цвет текста при наведении */
+  background-color: #46494a; 
+  color: #d0d0d0;
 }
-/* Дополнительные стили для header */
+
 .header-nav {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px 0;
-  background-color: rgba(51, 51, 51, 0.438); /* Цвет фона шапки */
+  background-color: rgba(51, 51, 51, 0.438); 
 }
 
 
@@ -149,7 +152,6 @@ main {
   width: 1600px;
   margin: 15px auto;
   display: flex;
-  align-items: center;
   justify-content: space-between;
 
 }
@@ -225,7 +227,7 @@ button {
   color: #333;
 }
 
-/* Мелкие настройки для дополнительной стилизации и читаемости */
+
 .card p:first-of-type {
   margin-top: 0;
 }
@@ -234,21 +236,20 @@ button {
   margin-bottom: 0;
 }
 
-/* Стили для отображения времени создания */
+
 .card p.time-created {
   font-size: 14px;
   color: #666;
 }
 .card .container > * {
   background-color: white;
-  border: 1px solid #eee; /* Легкая граница для каждого элемента */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Небольшая тень для эффекта "окошка" */
-  margin-bottom: 10px; /* Отступ снизу для разделения элементов */
-  padding: 10px; /* Отступ внутри каждого элемента */
-  border-radius: 5px; /* Скругленные углы для эстетики */
+  border: 1px solid #eee; 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 10px;
+  padding: 10px; 
+  border-radius: 5px;
 }
 
-/* Убираем отступ снизу у последнего элемента внутри контейнера */
 .card .container > *:last-child {
   margin-bottom: 0;
 }
@@ -265,4 +266,20 @@ font-family: "Caveat", cursive;
 font-size: clamp(2rem, 1vw, 1rem);
 color: #fff;
 text-shadow: 0 0 10px #18d25f, 0 0 20px #18d25f;
+}
+
+
+.mainTitle {
+  margin-top: 48vh;
+  position: absolute;
+
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 40vh; 
+  
 }

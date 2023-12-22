@@ -15,6 +15,7 @@ type Post struct {
 	CategoryId    []int
 	Category      []string
 	Comment       []Comment
+	Categories    string
 }
 
 type Comment struct {

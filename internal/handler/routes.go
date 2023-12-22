@@ -23,7 +23,7 @@ func (h *Handler) Routes() http.Handler {
 	mux.HandleFunc("/signin", h.signin)
 	mux.HandleFunc("/signout", h.AuthMiddleware(h.signout))
 
-	//filter handler
+	// filter handler
 	mux.HandleFunc("/filter", h.filterByCategory)
 	mux.HandleFunc("/myposts", h.AuthMiddleware(h.myposts))
 	mux.HandleFunc("/likedposts", h.AuthMiddleware(h.filterByLikes))
