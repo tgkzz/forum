@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -10,38 +9,6 @@ import (
 
 	"forum/internal/model"
 )
-
-func ErrorHandler(w http.ResponseWriter, code int) {
-	// w.WriteHeader(code)
-	tmpl, err := template.ParseFiles("template/html/error.html")
-	if err != nil {
-		text := fmt.Sprintf("Error 500\n Oppss! %s", http.StatusText(http.StatusInternalServerError))
-		http.Error(w, text, http.StatusInternalServerError)
-		return
-	}
-	res := &model.Err{Text_err: http.StatusText(code), Code_err: code}
-	err = tmpl.Execute(w, &res)
-	if err != nil {
-		text := fmt.Sprintf("Error 500\n Oppss! %s", http.StatusText(http.StatusInternalServerError))
-		http.Error(w, text, http.StatusInternalServerError)
-		return
-	}
-}
-
-func ClientErrorHandler(tmpl *template.Template, w http.ResponseWriter, cErr error, statuscode int) {
-	type ClientError struct {
-		ErrorText string
-	}
-
-	w.WriteHeader(statuscode)
-
-	err := tmpl.Execute(w, ClientError{
-		ErrorText: cErr.Error(),
-	})
-	if err != nil {
-		ErrorHandler(w, 500)
-	}
-}
 
 // CRITICAL ERROR: AUTH SERVICE DOES NOT RECORD USERID + IT DELETES ALL RECORD ABOUT OTHER SESSION
 
@@ -60,7 +27,6 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// small error: formatted time does not return to front
 	posts, err := h.service.Poster.GetAllPost()
 	if err != nil {
 		log.Print(err)
@@ -163,10 +129,14 @@ func (h *Handler) signin(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if err := h.service.Auth.CheckUserCreds(creds); err != nil {
-			if err == model.ErrIncorrectPassword || strings.Contains(err.Error(), "sql: no rows") {
+			if err == model.ErrIncorrectPassword {
 				log.Print(err)
 				ClientErrorHandler(tmpl, w, err, http.StatusUnauthorized)
 				// ErrorHandler(w, http.StatusUnauthorized)
+				return
+			} else if strings.Contains(err.Error(), "sql: no rows") {
+				log.Print(err)
+				ClientErrorHandler(tmpl, w, model.ErrInvalidUsername, http.StatusUnauthorized)
 				return
 			} else {
 				log.Print(err)

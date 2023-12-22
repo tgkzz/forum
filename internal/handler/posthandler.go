@@ -95,7 +95,7 @@ func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
 		if err := h.service.Poster.CreatePost(post); err != nil {
 			if err == model.ErrInvalidPostData || strings.Contains(err.Error(), "UNIQUE constraint failed") {
 				log.Print(err)
-				ClientErrorHandler(tmpl, w, err, http.StatusUnauthorized)
+				ClientErrorHandler(tmpl, w, err, http.StatusBadRequest)
 				// ErrorHandler(w, http.StatusBadRequest)
 				return
 			} else {
@@ -239,6 +239,9 @@ func (h *Handler) addgrade(w http.ResponseWriter, r *http.Request) {
 				log.Print(err)
 				ErrorHandler(w, http.StatusBadRequest)
 				return
+			} else if strings.Contains(err.Error(), "FOREIGN KEY constraint failed") {
+				log.Print(err)
+				ErrorHandler(w, http.StatusNotFound)
 			}
 			log.Print(err)
 			ErrorHandler(w, http.StatusInternalServerError)

@@ -17,16 +17,21 @@ func NewSqlite(config config.Config) (*sql.DB, error) {
 	if err := db.Ping(); err != nil {
 		return db, err
 	}
+
+	_, err = db.Exec("PRAGMA foreign_keys=ON;")
+	if err != nil {
+		return db, err
+	}
 	if err := createTable(db, config); err != nil {
 		return db, err
 	}
-	if err := createCategory(db, config); err != nil {
+	if err := createCategory(db); err != nil {
 		return db, err
 	}
 	return db, err
 }
 
-func createCategory(db *sql.DB, config config.Config) error {
+func createCategory(db *sql.DB) error {
 	// add another categories
 	request := "SELECT COUNT(*) FROM Category WHERE name IN ('comedy', 'horror', 'drama', 'other');"
 

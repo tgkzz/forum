@@ -21,17 +21,25 @@ func validatePost(post model.Post) error {
 			return model.ErrInvalidPostData
 		}
 	}
+
+	log.Print(len(post.Name))
+
+	if len(post.Name) < 5 || len(post.Name) > 50 {
+		return model.ErrInvalidPostData
+	}
+
+	if len(post.Text) < 5 || len(post.Text) > 200 {
+		return model.ErrInvalidPostData
+	}
+
 	post.Name = strings.TrimRight(post.Name, " ")
 	post.Text = strings.TrimRight(post.Text, " ")
 
 	if post.Name == "" {
-		fmt.Println("1")
 		return model.ErrInvalidPostData
 	}
 
 	if post.Text == "" {
-		fmt.Println("2")
-
 		return model.ErrInvalidPostData
 	}
 

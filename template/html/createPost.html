@@ -22,12 +22,7 @@
     <form  action="/posts/create" method="post" class="form-create">
         <fieldset>
             <legend>Create post</legend>
-    
-            <!-- {{if .Errtext}} -->
-            <div class="alert alert-warning">
-              <!-- {{.Errtext}} -->
-            </div>
-            <!-- {{end}} -->
+
     
             Categories: &nbsp;&emsp;
             <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Comedy">Comedy</label>
@@ -38,14 +33,14 @@
             <div class="form-group">
               <label for="title">Title:</label>
               <input type="text" name="name" class="form-control" id="name" maxlength="250" required>
-              <div class="error">{{ .ErrorText }}</div>
             </div>
      
             <div class="form-group">
                 <label for="text">Text:</label>
                 <textarea name="text" class="form-control" id="text" placeholder="Type text" style="height: 150px;" maxlength="2000" pattern=".*\S+.*" required></textarea>
-                <div class="error">{{ .ErrorText }}</div>
             </div>
+
+            <div class="error">{{ .ErrorText }}</div>
             
             <input type="submit" class="btn btn-info" value="Create post">
             <input type="reset" class="btn btn-info">
