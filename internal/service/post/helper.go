@@ -10,14 +10,18 @@ import (
 )
 
 func validateComment(comment model.Comment) error {
-	switch {
-	case len(comment.Text) < 5:
-		return model.ErrInvalidComment
-	case comment.Text == "":
+	trimmedText := strings.TrimSpace(comment.Text)
+	log.Print(trimmedText)
+	if trimmedText == "" {
 		return model.ErrEmptyComment
-	default:
-		return nil
 	}
+
+	// Проверка на минимальную длину текста.
+	if len(trimmedText) < 5 {
+		return model.ErrInvalidComment
+	}
+
+	return nil
 }
 
 func validatePost(post model.Post) error {
