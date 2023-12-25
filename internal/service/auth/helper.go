@@ -1,22 +1,25 @@
 package auth
 
 import (
-	"log"
 	"regexp"
 
 	"forum/internal/model"
 )
 
-func dataValidation(user model.User) bool {
-	if !isEmailValid(user.Email) {
-		log.Print("asd")
-	}
-
-	if !isPasswordStrong(user.Email) {
-		log.Print("qwe")
+func dataValidation(user model.User) error {
+	if !isUsernameValid(user.Username) {
+		return model.ErrInvalidUsernameCharacter
 	}
 
 	if !isEmailValid(user.Email) || !isPasswordStrong(user.Password) {
+		return model.ErrInvalidData
+	}
+
+	return nil
+}
+
+func isUsernameValid(str string) bool {
+	if match, _ := regexp.MatchString("^[a-zA-Z0-9_-]+$", str); !match {
 		return false
 	}
 

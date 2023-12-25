@@ -124,5 +124,9 @@ func (p *PostService) CreatePost(post model.Post) error {
 }
 
 func (p *PostService) CreateComment(comment model.Comment) error {
+	if err := validateComment(comment); err != nil {
+		return err
+	}
+
 	return p.repo.CreateComment(comment)
 }

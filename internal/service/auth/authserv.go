@@ -5,6 +5,7 @@ import (
 	"forum/internal/model"
 	"forum/internal/repository/auth"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -38,8 +39,10 @@ func NewAuthorizationService(repository auth.Authorization) *AuthService {
 func (s *AuthService) CreateUser(user model.User) error {
 	var err error
 
-	if !dataValidation(user) {
-		return model.ErrInvalidData
+	user.Email = strings.ToLower(user.Email)
+
+	if err := dataValidation(user); err != nil {
+		return err
 	}
 
 	user.Password, err = hashPassword(user.Password)

@@ -88,9 +88,18 @@ func (h *Handler) signup(w http.ResponseWriter, r *http.Request) {
 				log.Print(err)
 				ClientErrorHandler(tmpl, w, err, http.StatusBadRequest)
 				return
-			} else if strings.Contains(err.Error(), "UNIQUE constraint failed") {
+			} else if err == model.ErrInvalidUsernameCharacter {
 				log.Print(err)
 				ClientErrorHandler(tmpl, w, err, http.StatusBadRequest)
+				return
+			} else if strings.Contains(err.Error(), "UNIQUE constraint failed: Users.Username") {
+				log.Print(err)
+				ClientErrorHandler(tmpl, w, model.ErrUsernameIsBusy, http.StatusBadRequest)
+				// ErrorHandler(w, http.StatusConflict)
+				return
+			} else if strings.Contains(err.Error(), "UNIQUE constraint failed: Users.Email") {
+				log.Print(err)
+				ClientErrorHandler(tmpl, w, model.ErrEmailIsBusy, http.StatusBadRequest)
 				// ErrorHandler(w, http.StatusConflict)
 				return
 			} else {

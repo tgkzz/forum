@@ -51,7 +51,8 @@
                         <button type="submit"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true">{{.Dislikes}} &#128078;</i></button>
                       </form>
                 </span>
-            </div>            
+            </div>
+
             <div class="card-comments">
                 <h2>Comments</h2>
                 {{range .Comment}}
@@ -85,7 +86,7 @@
             <div class="card-postcomment">
                 <form action="/posts/{{.Id}}" method="POST">
                     <label for="text"><b>text</b></label>
-                    <input type="text" placeholder="Enter comment" name="text" id="text" required>
+                    <input type="text" placeholder="Enter comment" name="text" id="text">
                 </form>
             </div>
 

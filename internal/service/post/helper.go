@@ -9,8 +9,15 @@ import (
 	"forum/internal/model"
 )
 
-func validateGraded(grade model.Grade) error {
-	return nil
+func validateComment(comment model.Comment) error {
+	switch {
+	case len(comment.Text) < 5:
+		return model.ErrInvalidComment
+	case comment.Text == "":
+		return model.ErrEmptyComment
+	default:
+		return nil
+	}
 }
 
 func validatePost(post model.Post) error {

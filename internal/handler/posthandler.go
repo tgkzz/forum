@@ -4,11 +4,13 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
 
 	"forum/internal/model"
+	"forum/internal/pkg"
 )
 
 // add category display
@@ -93,10 +95,14 @@ func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if err := h.service.Poster.CreatePost(post); err != nil {
-			if err == model.ErrInvalidPostData || strings.Contains(err.Error(), "UNIQUE constraint failed") {
+			if err == model.ErrInvalidPostData {
 				log.Print(err)
 				ClientErrorHandler(tmpl, w, err, http.StatusBadRequest)
 				// ErrorHandler(w, http.StatusBadRequest)
+				return
+			} else if strings.Contains(err.Error(), "UNIQUE constraint failed") {
+				log.Print(err)
+				ClientErrorHandler(tmpl, w, model.ErrInvalidCategory, http.StatusBadRequest)
 				return
 			} else {
 				log.Print(err)
@@ -113,6 +119,12 @@ func (h *Handler) getpost(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		id := strings.TrimPrefix(r.URL.Path, "/posts/")
+		_, err := pkg.StrictAtoi(id)
+		if err != nil {
+			log.Print(err)
+			ErrorHandler(w, http.StatusNotFound)
+			return
+		}
 		res, err := h.service.Poster.GetPostById(id)
 		if err != nil {
 			if err == model.ErrInvalidId || strings.Contains(err.Error(), "sql: no rows in result set") {
@@ -138,13 +150,27 @@ func (h *Handler) getpost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	case "POST":
+		tmpl, err := template.ParseFiles("./template/html/post.html")
+		if err != nil {
+			log.Print(err)
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
+		}
+
 		idstr := strings.TrimPrefix(r.URL.Path, "/posts/")
-		id, err := strconv.Atoi(idstr)
+
+		id, err := pkg.StrictAtoi(idstr)
 		if err != nil {
 			log.Print(err)
 			ErrorHandler(w, http.StatusNotFound)
 			return
 		}
+		// id, err := strconv.Atoi(idstr)
+		// if err != nil {
+		// 	log.Print(err)
+		// 	ErrorHandler(w, http.StatusNotFound)
+		// 	return
+		// }
 		session, err := r.Cookie("session")
 		if err != nil {
 			log.Print(err)
@@ -162,11 +188,7 @@ func (h *Handler) getpost(w http.ResponseWriter, r *http.Request) {
 			PostId: id,
 			UserId: user.Id,
 		}
-		if err := h.service.Poster.CreateComment(comment); err != nil {
-			log.Print(err)
-			ErrorHandler(w, http.StatusInternalServerError)
-			return
-		}
+
 		post, err := h.service.GetPostById(idstr)
 		if err != nil {
 			if err == model.ErrInvalidId {
@@ -176,12 +198,19 @@ func (h *Handler) getpost(w http.ResponseWriter, r *http.Request) {
 			ErrorHandler(w, http.StatusInternalServerError)
 			return
 		}
-		tmpl, err := template.ParseFiles("./template/html/post.html")
-		if err != nil {
+
+		if err := h.service.Poster.CreateComment(comment); err != nil {
+			if err == model.ErrEmptyComment || err == model.ErrInvalidComment {
+				//realize normal logic of incorrect commentary, preview of the problem. potential solution is too return more data
+				http.Redirect(w, r, "/posts/"+idstr+"?error="+url.QueryEscape(err.Error()), http.StatusSeeOther)
+				// http.Redirect(w, r, "/posts/"+idstr, http.StatusSeeOther)
+				return
+			}
 			log.Print(err)
 			ErrorHandler(w, http.StatusInternalServerError)
 			return
 		}
+
 		if err := tmpl.Execute(w, post); err != nil {
 			log.Print(err)
 			ErrorHandler(w, http.StatusInternalServerError)
@@ -212,21 +241,35 @@ func (h *Handler) addgrade(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// get postid
-		postId, err := strconv.Atoi(r.FormValue("post_id"))
+		postId, err := pkg.StrictAtoi(r.FormValue("post_id"))
 		if err != nil {
 			log.Print(err)
 			ErrorHandler(w, http.StatusNotFound)
 			return
 		}
+
+		// postId, err := strconv.Atoi(r.FormValue("post_id"))
+		// if err != nil {
+		// 	log.Print(err)
+		// 	ErrorHandler(w, http.StatusNotFound)
+		// 	return
+		// }
 		commentId, _ := strconv.Atoi(r.FormValue("comment_id"))
 
 		// get value
-		val, err := strconv.Atoi(r.FormValue("status"))
+		val, err := pkg.StrictAtoi(r.FormValue("status"))
 		if err != nil {
 			log.Print(err)
-			ErrorHandler(w, http.StatusInternalServerError)
+			ErrorHandler(w, http.StatusBadRequest)
 			return
 		}
+
+		// val, err := strconv.Atoi(r.FormValue("status"))
+		// if err != nil {
+		// 	log.Print(err)
+		// 	ErrorHandler(w, http.StatusInternalServerError)
+		// 	return
+		// }
 		grade := model.Grade{
 			UserId:     user.Id,
 			PostId:     postId,
