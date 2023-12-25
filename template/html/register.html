@@ -6,6 +6,42 @@
     <link rel="stylesheet" href="/template/css/register.css">
 <title>Registration</title>
 </head>
+<style>
+    /* Стили контейнера для поля пароля и подсказок */
+    .password-container {
+        position: relative; /* Для позиционирования подсказок относительно поля пароля */
+        display: flex; /* Для выравнивания поля ввода и подсказок в одну линию */
+        align-items: center; /* Центрирование по вертикали */
+    }
+    
+    /* Скрыть подсказки по умолчанию */
+    #passwordCriteria {
+        display: none;
+        position: absolute; /* Абсолютное позиционирование для подсказок */
+        left: 100%; /* Подсказки начинаются сразу после поля ввода пароля */
+        margin-left: 10px; /* Добавить немного места между полем ввода и подсказками */
+        white-space: nowrap; /* Удерживаем подсказки в одной строке */
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+        width: auto; /* Ширина подсказок будет соответствовать содержимому */
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        z-index: 1000;
+    }
+    
+    /* Стилизация элементов списка */
+    #passwordCriteria li {
+        font-size: 12px;
+        color: #333;
+    }
+    
+    /* Показать подсказки при наведении на поле ввода пароля */
+    #password:hover + #passwordCriteria {
+        display: block;
+    }
+    </style>
+    
 <body>
     <canvas id="canvas">Canvas not supported.</canvas>
     <div id="filter"></div>
@@ -22,7 +58,16 @@
     <input type="email" placeholder="Enter Email" name="email" id="email" required>
 
     <label for="password"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="password" id="password" required>
+    <div class="password-container">
+        <input type="password" placeholder="Enter Password" name="password" id="password" required>
+        <!-- Подсказки, которые отображаются при наведении -->
+        <ul id="passwordCriteria">
+            <li>At least 8 characters long</li>
+            <li>Includes uppercase and lowercase letters</li>
+            <li>Contains a number</li>
+            <li>Has a special character (e.g., !@#$%^&*)</li>
+        </ul>
+    </div>
     <div class="error">{{ .ErrorText }}</div>
     <button id="submitButton">Submit</button>
 </form>
