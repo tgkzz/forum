@@ -1,16 +1,14 @@
 package handler
 
 import (
+	"forum/internal/model"
+	"forum/internal/pkg"
 	"html/template"
 	"log"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 	"time"
-
-	"forum/internal/model"
-	"forum/internal/pkg"
 )
 
 // add category display
@@ -58,10 +56,21 @@ func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	case "POST":
-		if err := r.ParseForm(); err != nil {
+		if err := r.ParseMultipartForm(10 << 20); err != nil {
+			// must be client error
+			ErrorHandler(w, http.StatusBadRequest)
+			return
+		}
+
+		// image part
+		file, header, err := r.FormFile("photo")
+		if err != nil {
 			ErrorHandler(w, http.StatusInternalServerError)
 			return
 		}
+		defer file.Close()
+
+		// somewhere here, must be check for image size
 
 		session, err := r.Cookie("session")
 		if err != nil {
@@ -94,8 +103,13 @@ func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
 			CategoryId:   category,
 		}
 
-		if err := h.service.Poster.CreatePost(post); err != nil {
-			if err == model.ErrInvalidPostData {
+		userfile := model.File{
+			FileGiven: file,
+			Header:    header,
+		}
+
+		if err := h.service.Poster.CreatePost(post, userfile); err != nil {
+			if err == model.ErrInvalidPostData || err == model.ErrInvalidExtension {
 				log.Print(err)
 				ClientErrorHandler(tmpl, w, err, http.StatusBadRequest)
 				// ErrorHandler(w, http.StatusBadRequest)
@@ -103,6 +117,10 @@ func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
 			} else if strings.Contains(err.Error(), "UNIQUE constraint failed") {
 				log.Print(err)
 				ClientErrorHandler(tmpl, w, model.ErrInvalidCategory, http.StatusBadRequest)
+				return
+			} else if err == model.ErrTooLargeFile {
+				log.Print(err)
+				ClientErrorHandler(tmpl, w, err, http.StatusRequestEntityTooLarge)
 				return
 			} else {
 				log.Print(err)
@@ -112,6 +130,9 @@ func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
 		}
 
 		http.Redirect(w, r, "/", http.StatusSeeOther)
+	default:
+		ErrorHandler(w, http.StatusMethodNotAllowed)
+		return
 	}
 }
 
@@ -189,24 +210,24 @@ func (h *Handler) getpost(w http.ResponseWriter, r *http.Request) {
 			UserId: user.Id,
 		}
 
+		if err := h.service.Poster.CreateComment(comment); err != nil {
+			if err == model.ErrEmptyComment || err == model.ErrInvalidComment {
+				// realize normal logic of incorrect commentary, preview of the problem. potential solution is too return more data
+				http.Redirect(w, r, "/posts/"+idstr+"?error="+url.QueryEscape(err.Error()), http.StatusSeeOther)
+				// http.Redirect(w, r, "/posts/"+idstr, http.StatusSeeOther)
+				return
+			}
+			log.Print(err)
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
+		}
+
 		post, err := h.service.GetPostById(idstr)
 		if err != nil {
 			if err == model.ErrInvalidId {
 				ErrorHandler(w, http.StatusNotFound)
 				return
 			}
-			ErrorHandler(w, http.StatusInternalServerError)
-			return
-		}
-
-		if err := h.service.Poster.CreateComment(comment); err != nil {
-			if err == model.ErrEmptyComment || err == model.ErrInvalidComment {
-				//realize normal logic of incorrect commentary, preview of the problem. potential solution is too return more data
-				http.Redirect(w, r, "/posts/"+idstr+"?error="+url.QueryEscape(err.Error()), http.StatusSeeOther)
-				// http.Redirect(w, r, "/posts/"+idstr, http.StatusSeeOther)
-				return
-			}
-			log.Print(err)
 			ErrorHandler(w, http.StatusInternalServerError)
 			return
 		}
@@ -254,8 +275,15 @@ func (h *Handler) addgrade(w http.ResponseWriter, r *http.Request) {
 		// 	ErrorHandler(w, http.StatusNotFound)
 		// 	return
 		// }
-		commentId, _ := strconv.Atoi(r.FormValue("comment_id"))
-
+		var commentId int
+		if r.FormValue("comment_id") != "" {
+			commentId, err = pkg.StrictAtoi(r.FormValue("comment_id"))
+			if err != nil {
+				log.Print(err)
+				ErrorHandler(w, http.StatusBadRequest)
+				return
+			}
+		}
 		// get value
 		val, err := pkg.StrictAtoi(r.FormValue("status"))
 		if err != nil {

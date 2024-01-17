@@ -19,7 +19,7 @@
    
  
     <div class="container">
-    <form  action="/posts/create" method="post" class="form-create">
+    <form action="/posts/create" method="post" class="form-create" enctype="multipart/form-data">
         <fieldset>
             <legend>Create post</legend>
 
@@ -39,6 +39,13 @@
                 <label for="text">Text:</label>
                 <textarea name="text" class="form-control" id="text" placeholder="Type text" style="height: 150px;" maxlength="2000" pattern=".*\S+.*" required></textarea>
             </div>
+
+            <!-- image upload part -->
+            <div class="form-group">
+                <label for="file">Upload Photo:</label>
+                <input type="file" name="photo" class="form-control" id="file">
+            </div>
+            
 
             <div class="error">{{ .ErrorText }}</div>
             

@@ -8,6 +8,40 @@ This project consists in creating a web forum that allows :
 - liking and disliking posts and comments.
 - filtering posts.
 
+## Run Locally
+
+run the project using next command
+
+```bash
+  go run .
+```
+
+or use make file
+
+```bash
+  make run
+```
+
+or use docker
+
+```bash
+  make build
+  make docker-run
+```
+
+in order to stop container use next command
+
+```bash
+  make stop
+```
+
+in both ways server will run on the next route
+
+```
+http://localhost:4000/
+```
+
+
 
 
 ## ERD Diagram

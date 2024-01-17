@@ -1,16 +1,13 @@
 package handler
 
 import (
+	"forum/internal/model"
 	"html/template"
 	"log"
 	"net/http"
 	"strings"
 	"time"
-
-	"forum/internal/model"
 )
-
-// CRITICAL ERROR: AUTH SERVICE DOES NOT RECORD USERID + IT DELETES ALL RECORD ABOUT OTHER SESSION
 
 func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
@@ -52,7 +49,6 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 			ErrorHandler(w, http.StatusInternalServerError)
 			return
 		}
-		// fmt.Fprintf(w, "hello from home")
 	default:
 		ErrorHandler(w, http.StatusMethodNotAllowed)
 		return
@@ -108,9 +104,11 @@ func (h *Handler) signup(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
-
-		// fmt.Fprintf(w, "success")
 		http.Redirect(w, r, "/signin", http.StatusSeeOther)
+
+	default:
+		ErrorHandler(w, http.StatusMethodNotAllowed)
+		return
 	}
 }
 

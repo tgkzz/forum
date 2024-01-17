@@ -103,9 +103,9 @@ func (p *PostRepo) AddGradeToComment(grade model.Grade) error {
 }
 
 func (p *PostRepo) CreatePost(post model.Post) error {
-	query := "INSERT INTO Post (Name, Text, CreationTime, UserId) VALUES ($1, $2, $3, $4) RETURNING Id"
+	query := "INSERT INTO Post (Name, Text, CreationTime, UserId, ImagePath) VALUES ($1, $2, $3, $4, $5) RETURNING Id"
 	var postId int
-	err := p.DB.QueryRow(query, post.Name, post.Text, post.CreationTime, post.UserId).Scan(&postId)
+	err := p.DB.QueryRow(query, post.Name, post.Text, post.CreationTime, post.UserId, post.PhotoPath).Scan(&postId)
 	if err != nil {
 		return err
 	}
@@ -125,7 +125,7 @@ func (p *PostRepo) GetAllPost() ([]model.Post, error) {
 	// query := "SELECT Id, Name, Text, UserId, CategoryId FROM Post"
 	// query := "SELECT Id, Name, Text, UserId FROM Post"
 	query := `
-    SELECT p.Id, p.Name, p.Text, p.UserId, u.Username, p.CreationTime 
+    SELECT p.Id, p.Name, p.Text, p.UserId, u.Username, p.CreationTime, p.ImagePath 
     FROM Post p 
     JOIN Users u ON p.UserId = u.Id
     `
@@ -139,7 +139,7 @@ func (p *PostRepo) GetAllPost() ([]model.Post, error) {
 
 	for rows.Next() {
 		var post model.Post
-		if err := rows.Scan(&post.Id, &post.Name, &post.Text, &post.UserId, &post.Username, &post.CreationTime); err != nil {
+		if err := rows.Scan(&post.Id, &post.Name, &post.Text, &post.UserId, &post.Username, &post.CreationTime, &post.PhotoPath); err != nil {
 			return result, err
 		}
 
@@ -153,12 +153,12 @@ func (p *PostRepo) GetPostById(id int) (model.Post, error) {
 	var result model.Post
 
 	postQuery := `
-    SELECT p.Id, p.Name, p.Text, p.UserId, p.CreationTime
+    SELECT p.Id, p.Name, p.Text, p.UserId, p.CreationTime, p.ImagePath
     FROM Post p
     WHERE p.Id = $1
     `
 	row := p.DB.QueryRow(postQuery, id)
-	if err := row.Scan(&result.Id, &result.Name, &result.Text, &result.UserId, &result.CreationTime); err != nil {
+	if err := row.Scan(&result.Id, &result.Name, &result.Text, &result.UserId, &result.CreationTime, &result.PhotoPath); err != nil {
 		return result, model.ErrInvalidId
 	}
 

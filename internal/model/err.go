@@ -21,4 +21,6 @@ var (
 	ErrEmailIsBusy              error = errors.New("email is already taken")
 	ErrInvalidNum               error = errors.New("invalid format: leading zeros or plus signs are not allowed")
 	ErrInvalidUsernameCharacter error = errors.New("username consist of invalid characters")
+	ErrInvalidExtension         error = errors.New("invalid extension")
+	ErrTooLargeFile             error = errors.New("too large file")
 )

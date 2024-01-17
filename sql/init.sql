@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS Post(
     "Text" TEXT NOT NULL,
     "CreationTime" TIMESTAMP,
     "UserId" INTEGER NOT NULL,
+    "ImagePath" TEXT NOT NULL,
     FOREIGN KEY ("UserId") REFERENCES Users("Id")
 );
 

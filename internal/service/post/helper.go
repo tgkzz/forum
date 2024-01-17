@@ -2,23 +2,52 @@ package post
 
 import (
 	"fmt"
+	"forum/internal/model"
+	"io"
 	"log"
+	"path/filepath"
 	"strings"
 	"unicode"
-
-	"forum/internal/model"
 )
 
 func validateComment(comment model.Comment) error {
 	trimmedText := strings.TrimSpace(comment.Text)
-	log.Print(trimmedText)
 	if trimmedText == "" {
 		return model.ErrEmptyComment
 	}
 
-	// Проверка на минимальную длину текста.
 	if len(trimmedText) < 5 {
 		return model.ErrInvalidComment
+	}
+
+	return nil
+}
+
+func validateFile(file model.File) error {
+	_, err := file.FileGiven.Seek(0, io.SeekEnd)
+	if err != nil {
+		return err
+	}
+
+	size, err := file.FileGiven.Seek(0, io.SeekCurrent)
+	if err != nil {
+		return err
+	}
+
+	_, err = file.FileGiven.Seek(0, io.SeekStart)
+	if err != nil {
+		return err
+	}
+
+	if size > 20<<20 {
+		return model.ErrTooLargeFile
+	}
+
+	filename := file.Header.Filename
+	allowedExtensions := map[string]bool{".jpg": true, ".jpeg": true, ".png": true, ".gif": true, ".svg": true}
+	ext := strings.ToLower(filepath.Ext(filename))
+	if !allowedExtensions[ext] {
+		return model.ErrInvalidExtension
 	}
 
 	return nil

@@ -3,8 +3,11 @@ package post
 import (
 	"forum/internal/model"
 	"forum/internal/repository/post"
+	"io"
 	"log"
+	"os"
 	"strconv"
+	"strings"
 )
 
 // worked in database, problem in post
@@ -16,7 +19,7 @@ type Poster interface {
 	GetAllPost() ([]model.Post, error)
 	GetPostById(id string) (model.Post, error)
 	GetCategoryByName(strings []string) ([]int, error)
-	CreatePost(post model.Post) error
+	CreatePost(post model.Post, file model.File) error
 	CreateComment(comment model.Comment) error
 	AddGrade(grade model.Grade) error
 }
@@ -115,10 +118,31 @@ func (p *PostService) GetAllPost() ([]model.Post, error) {
 	return posts, err
 }
 
-func (p *PostService) CreatePost(post model.Post) error {
+func (p *PostService) CreatePost(post model.Post, file model.File) error {
 	if err := validatePost(post); err != nil {
 		return err
 	}
+
+	if err := validateFile(file); err != nil {
+		return err
+	}
+
+	imagePath := "./template/images/" + file.Header.Filename
+	if _, err := os.Stat("./template/images"); os.IsNotExist(err) {
+		os.Mkdir("./template/images", os.ModePerm)
+	}
+
+	dst, err := os.Create(imagePath)
+	if err != nil {
+		return err
+	}
+	defer dst.Close()
+
+	if _, err := io.Copy(dst, file.FileGiven); err != nil {
+		return err
+	}
+
+	post.PhotoPath = strings.TrimLeft(imagePath, ".")
 
 	return p.repo.CreatePost(post)
 }

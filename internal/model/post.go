@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"mime/multipart"
+	"time"
+)
 
 type Post struct {
 	Id            int
@@ -8,6 +11,7 @@ type Post struct {
 	Text          string
 	CreationTime  time.Time
 	FormattedTime string
+	filepath      string
 	UserId        int
 	Username      string
 	Likes         int
@@ -16,6 +20,13 @@ type Post struct {
 	Category      []string
 	Comment       []Comment
 	Categories    string
+	// path for potential image
+	PhotoPath string
+}
+
+type File struct {
+	FileGiven multipart.File
+	Header    *multipart.FileHeader
 }
 
 type Comment struct {
