@@ -1,229 +1,168 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #111;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
 
 .container2 {
-    
-    font-family: "arial black", Helvetica, verdana, monospace, sans-serif;
-    color: #fff;
-
-
+    margin: 70px auto; /* Увеличен отступ сверху для учета высоты header */
+    padding: 20px;
+    border-radius: 8px;
 }
-canvas#canvas {
-    display: block;
-    background: #000;
+
+.header2 {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 20px;
     width: 100%;
-    height: 100%;
-    z-index: -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background-color: #111;
+    z-index: 1; /* Установлен z-index для header */
 }
 
-#filter {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: rgba(0, 0, 0, 0.6);
-}
-
-.header {
-    background-color: rgba(51, 51, 51, 0.438); /* Полупрозрачный фон шапки */
-    /* text-align: center; */
-    position: fixed;
-    width: 100%;
-    top: 0;
-    right: 0;
-    height: 50px;
-    
-}
-
-.header-title {
-    font-size: 1.4rem;
-    color: #fff;
-    margin-top: -10px; 
-    text-align: center;
-    
-
-}
-
-.header__link {
+.header__link2 {
     text-decoration: none;
     color: #fff;
-    margin: 0 20px;
-    font-size: 1rem; 
-   
+    font-size: 1rem;
 }
 
-.header__link:hover {
-    text-decoration: underline;
-}
-
-
-/* Основные стили */
-.container {
-    /* max-width: 1200px; */
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.main {
-    margin-top: 60px; 
-}
-
-.card {
-    background: rgba(48, 45, 45, 0.5);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin-top: 50px;
-}
-@keyframes colorChange {
-    0% { color: #fff; }
-    50% { color: #faadad; }
-    100% { color: #fff; }
-}
-
-
-.title, .card-descr h1, .card-comments h2 {
+.header-title2 {
+    font-size: 1.8rem;
     color: #fff;
-    animation: colorChange 5s infinite;
+    text-align: center;
+    margin-top: -10px;
+    flex-grow: 1;
 }
 
-.card-text, .time, .comment p {
-    color: #ccc;
-  
+.main2 {
+    padding: 20px;
+    margin-top: 70px; /* Увеличен отступ сверху для учета высоты header */
 }
 
-/* Стили для комментариев */
-/* Стили для комментариев и карточек */
-.card-comments, .card-postcomment {
+.card2 {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    padding: 20px;
     margin-top: 20px;
 }
 
-.comment {
-    background-color: #46494a;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    transition: background-color 0.3s ease; /* Добавляем переход для анимации */
+.card-descr2 {
+    margin-bottom: 20px;
 }
 
-/* Стили для формы */
-.card-postcomment form {
+.title2 {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.card-text2 {
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+.time2 {
+    color: #ccc;
+}
+
+.card-categories2 {
+    color: #fff;
+}
+
+.card-categories2 h2 {
+    color: #fff;
+}
+
+.card-categories2 ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card-categories2 li {
+    margin-bottom: 5px;
+}
+
+.likes2 {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
 }
 
-.card-postcomment input[type="text"] {
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 2px solid #ccc;
-}
-
-.card-postcomment button {
-    padding: 10px 15px;
-    background-color: #d0d0d0;
-    color: #060606;
+.likes2 button {
+    background-color: #e50914;
+    color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
+    margin-right: 10px;
 }
 
-/* Изменение цвета при наведении */
-.comment:hover, .card-postcomment button:hover {
-    background-color: #333;
-    color: #fff; 
+.likes2 button:hover {
+    background-color: #fff;
+    color: #000;
 }
 
-
-/* Стили для footer */
-/* .footer {
-    text-align: center;
-    padding: 10px;
-    background-color: rgba(51, 51, 51, 0.438);
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+.comment2 {
+    margin-bottom: 20px;
 }
 
-.footer-text {
-    font-family: "Caveat", cursive;
-    font-size: clamp(2rem, 1vw, 1rem);
-    color: #fff;
-    text-shadow: 0 0 10px #18d25f, 0 0 20px #18d25f;
-} */
-
-/* Стили для .likes */
-.likes {
-    display: flex; /* Используем флексбокс */
-    border-radius: 10px;
-    padding: 10px;
-   
-    align-items: center;
+.comment2 p {
+    color: #ccc;
 }
 
-/* Стили для .likes button */
-.likes button {
-    padding: 10px 15px;
-    color: #060606;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
+.comment2 .likes2 button {
+    margin-right: 5px;
 }
 
-.likes button:hover {
-    background-color: #848788;
-    color: #d0d0d0;
-}
-
-/* Стили для .card-postcomment */
-.card-postcomment {
+.card-postcomment2 {
     margin-top: 20px;
-    background: rgba(48, 45, 45, 0.5);
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.card-postcomment form {
-    display: flex;
-    flex-direction: column;
+.card-postcomment2 input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
 }
 
-.card-postcomment label {
+.card-postcomment2 label {
+    display: block;
+    font-size: 1rem;
     margin-bottom: 5px;
     color: #fff;
 }
 
-.card-postcomment input[type="text"] {
-    padding: 10px;
-    border-radius: 5px;
-    border: 2px solid #ccc;
-    margin-bottom: 10px;
-    color: #000; /* Цвет текста ввода */
-    background-color: #fff; /* Цвет фона ввода */
+.card-postcomment2 input[type="text"] {
+    background: rgba(255, 255, 255, 0.8);
+    color: #333;
 }
 
-.card-postcomment input[type="text"]:focus {
-    border-color: #46494a;
-}
-
-.card-postcomment button {
+.card-postcomment2 input[type="submit"] {
+    background-color: #e50914;
+    color: #fff;
     padding: 10px 15px;
-    background-color: #d0d0d0;
-    color: #060606;
-    border: none;
     border-radius: 4px;
+    border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
 }
 
-.card-postcomment button:hover {
-    background-color: #46494a;
-    color: #d0d0d0;
+.card-postcomment2 input[type="submit"]:hover {
+    background-color: #fff;
+    color: #000;
+  
+}
+.card-descr2 img {
+    max-width: 20%;
+    height: auto; /* Поддерживаем соотношение сторон при изменении ширины */
 }

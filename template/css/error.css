@@ -2,66 +2,44 @@
 
 body {
   font-family: "Arial", sans-serif;
-  background-color: #f8f9fa; /* Bootstrap default background color */
-  color: #343a40; /* Bootstrap default text color */
+  background-color: #111; 
+  color: #fff;
 }
 
 .container {
-  max-width: 800px; /* Adjust as needed */
+  max-width: 800px;
   margin: 50px auto;
-  background-color: #fff; /* Container background color */
-  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.8); 
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
-}
-
-canvas#canvas {
-  display: block;
-  background: #000;
-  position: fixed; /* Фиксированное позиционирование */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-}
-
-#filter {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: -1; /* Помещаем элемент на задний план */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
 }
 
 .navbar {
-  background-color: rgba(51, 51, 51, 0.438);
-
+  background-color: rgba(0, 0, 0, 0.8); 
 }
+
 .navbar-brand {
   font-size: 1.5rem;
+  color: #fff; 
 }
 
 h1 {
   font-size: 2.5rem;
-}
-
-.text-danger {
-  color: #dc3545; 
+  color: #fff; 
+  color: #dc3545;
 }
 
 .alert-danger {
-  background-color: #f8d7da; /* Bootstrap alert-danger background color */
-  border: 1px solid #f5c6cb; /* Bootstrap alert-danger border color */
-  color: #721c24; /* Bootstrap alert-danger text color */
+  background-color: #f8d7da; 
+  border: 1px solid #f5c6cb; 
+  color: #721c24;
   border-radius: 4px;
   margin-bottom: 20px;
   padding: 15px;
 }
 
 .btn-primary {
-  background-color: #007bff; /* Bootstrap primary color for buttons */
+  background-color: #e50914; 
   color: #fff;
   font-weight: bold;
   border-radius: 4px;
@@ -70,14 +48,15 @@ h1 {
 }
 
 .btn-primary:hover {
-  background-color: #0056b3; /* Darker shade for hover */
+  background-color: #fff;
+  color: #000;
 }
 
 /* Additional styling for the "Go back" link */
 .btn-primary:focus,
 .btn-primary.focus {
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* Bootstrap focus style */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
 }
 
 .text-center {

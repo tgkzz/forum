@@ -6,98 +6,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{{.Name}}</title>
-    <!-- <link rel="stylesheet" href="/template/css/normilize.css"> -->
     <link rel="stylesheet" href="/template/css/posts.css">
 </head>
 <body>
     <div class="container2">
-    <canvas id="canvas">Canvas not supported.</canvas>
-    <div id="filter"></div>
-    <header class="header">
-        <a class="header__link" href="/">Back</a>
-        <h1 class="header-title">Cinema Forum</h1>
-      
-    </header>
 
-    <main class="main container">
-        <div class="card">
-            <div class="card-descr">
-                <h1 class="title">{{.Name}}</h1>
-                <p class="card-text">{{.Text}}</p>
-                <p class="time">{{.FormattedTime}}</p>
-                <img src="{{.PhotoPath}}" width="500" height="600"> 
-            </div>
+        <header class="header2">
+            <a class="header__link2" href="/">Back</a>
+            <h1 class="header-title2">Cinema Forum</h1>
+        </header>
 
-            <div class="card-categories">
-                <h2>Categories</h2>
-                <ul>
-                    {{range .Category}}
-                    <li>{{.}}</li>
+        <main class="main2 container2">
+            <div class="card2">
+                <div class="card-descr2">
+                    <h1 class="title2">{{.Name}}</h1>
+                    <p class="card-text2">{{.Text}}</p>
+                    <p class="time2">{{.FormattedTime}}</p>
+                    <img src="{{.PhotoPath}}" width="500" height="600">
+                </div>
+
+                <div class="card-categories2">
+                    <h2>Categories</h2>
+                    <ul>
+                        {{range .Category}}
+                        <li>{{.}}</li>
+                        {{end}}
+                    </ul>
+                </div>
+
+                <div class="likes2">
+                    <span>
+                        <form method="POST" action="/posts/likes">
+                            <input type="hidden" name="post_id" value={{.Id}}>
+                            <input type="hidden" name="status" value="1">
+                            <button type="submit"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true">{{.Likes}}&#128077;</i></button>
+                        </form>
+                    </span>
+                    <span>
+                        <form method="POST" action="/posts/likes">
+                            <input type="hidden" name="post_id" value={{.Id}}>
+                            <input type="hidden" name="status" value="-1">
+                            <button type="submit"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true">{{.Dislikes}} &#128078;</i></button>
+                        </form>
+                    </span>
+                </div>
+
+                <div class="card-comments2">
+                    <h2>Comments</h2>
+                    {{range .Comment}}
+                        <div class="comment2">
+                            <p>{{.Username}}</p>
+                            <p style="overflow-x: scroll;">{{.Text}}</p>
+
+                            <div class="likes2">
+                                <span>
+                                    <form method="POST" action="/posts/likes">
+                                        <input type="hidden" name="comment_id" value={{.Id}}>
+                                        <input type="hidden" name="post_id" value={{.PostId}}>
+                                        <input type="hidden" name="status" value="1">
+                                        <button type="submit"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true">&#128077;{{.Likes}}</i></button>
+                                    </form>
+                                </span>
+                                <span>
+                                    <form method="POST" action="/posts/likes">
+                                        <input type="hidden" name="comment_id" value={{.Id}}>
+                                        <input type="hidden" name="post_id" value={{.PostId}}>
+                                        <input type="hidden" name="status" value="-1">
+                                        <button type="submit"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"> &#128078;{{.Dislikes}}</i></button>
+                                    </form>
+                                </span>
+                            </div>
+                            <br>
+                        </div>
                     {{end}}
-                </ul>
-            </div>
-
-            <div class="likes">
-                <span>
-                    <form method="POST" action="/posts/likes">
-                      <input type="hidden" name="post_id" value={{.Id}}>
-                      <input type="hidden" name="status" value="1">
-                      <button type="submit"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true">{{.Likes}}&#128077;</i></button>
+                </div>
+                <div class="card-postcomment2">
+                    <form action="/posts/{{.Id}}" method="POST">
+                        <label for="text2"><b>text</b></label>
+                        <input type="text" placeholder="Enter comment" name="text" id="text2">
                     </form>
-                  </span>
-                <span>
-                    <form method="POST" action="/posts/likes">
-                        <input type="hidden" name="post_id" value={{.Id}}>
-                        <input type="hidden" name="status" value="-1">
-                        <button type="submit"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true">{{.Dislikes}} &#128078;</i></button>
-                      </form>
-                </span>
+                </div>
             </div>
-
-            <div class="card-comments">
-                <h2>Comments</h2>
-                {{range .Comment}}
-                    <div class="comment">
-                        <p>{{.Username}}</p>
-                        <p style="overflow-x: scroll;">{{.Text}}</p>
-
-                    <div class="likes">
-                <span>
-                    <form method="POST" action="/posts/likes">
-                      <input type="hidden" name="comment_id" value={{.Id}}>
-                      <input type="hidden" name="post_id" value={{.PostId}}>
-                      <input type="hidden" name="status" value="1">
-                      <button type="submit"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true">&#128077;{{.Likes}}</i></button>
-                    </form>
-                  </span>
-                <span>
-                    <form method="POST" action="/posts/likes">
-                        <input type="hidden" name="comment_id" value={{.Id}}>
-                        <input type="hidden" name="post_id" value={{.PostId}}>
-                        <input type="hidden" name="status" value="-1">
-                        <button type="submit"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"> &#128078;{{.Dislikes}}</i></button>
-                      </form>
-                </span>
-            </div>
-                        <br>
-                    </div>
-                {{end}}
-            </div>
-            </div>
-            <div class="card-postcomment">
-                <form action="/posts/{{.Id}}" method="POST">
-                    <label for="text"><b>text</b></label>
-                    <input type="text" placeholder="Enter comment" name="text" id="text">
-                </form>
-            </div>
-
-        </div>
+        </main>
     </div>
-    </main>
-
-    <!-- <footer class="footer">
-        <p class="footer-text">Cinema Forum © 2023</p>
-    </footer> -->
-    <script src="/template/js/script.js"></script>
 </body>
 </html>

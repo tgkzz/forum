@@ -9,54 +9,51 @@
 </head>
 
 <body>
-    <canvas id="canvas">Canvas not supported.</canvas>
-    <div id="filter"></div>
+
     <header>
         <a class="header__link" href="/">Back</a>
         <h1 class="header-title">Cinema Forum</h1>
     </header>
-<body>
-   
- 
-    <div class="container">
-    <form action="/posts/create" method="post" class="form-create" enctype="multipart/form-data">
-        <fieldset>
-            <legend>Create post</legend>
 
-    
-            Categories: &nbsp;&emsp;
-            <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Comedy">Comedy</label>
-            <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Horror">Horror</label>
-            <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Drama">Drama</label>
-            <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Other">Other</label>
-            <br><br>
-            <div class="form-group">
-              <label for="title">Title:</label>
-              <input type="text" name="name" class="form-control" id="name" maxlength="250" required>
-            </div>
-     
-            <div class="form-group">
-                <label for="text">Text:</label>
-                <textarea name="text" class="form-control" id="text" placeholder="Type text" style="height: 150px;" maxlength="2000" pattern=".*\S+.*" required></textarea>
-            </div>
+    <body>
 
-            <!-- image upload part -->
-            <div class="form-group">
-                <label for="file">Upload Photo:</label>
-                <input type="file" name="photo" class="form-control" id="file">
-            </div>
-            
 
-            <div class="error">{{ .ErrorText }}</div>
-            
-            <input type="submit" class="btn btn-info" value="Create post">
-            <input type="reset" class="btn btn-info">
-          </fieldset>
-    </form>
-</div>
- 
- 
-    <script src="/template/js/script.js"></script>
-</body>
+        <div class="container">
+            <form action="/posts/create" method="post" class="form-create" enctype="multipart/form-data">
+                <fieldset>
+                    <legend>Create post</legend>
 
-</html> 
+
+                    Categories: &nbsp;&emsp;
+                    <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Comedy">Comedy</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Horror">Horror</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Drama">Drama</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="categories[]" value="Other">Other</label>
+                    <br><br>
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" name="name" class="form-control" id="name" maxlength="250" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text">Text:</label>
+                        <textarea name="text" class="form-control" id="text" placeholder="Type text" style="height: 150px;" maxlength="2000" pattern=".*\S+.*" required></textarea>
+                    </div>
+
+                    <!-- image upload part -->
+                    <div class="form-group">
+                        <label for="file">Upload Photo:</label>
+                        <input type="file" name="photo" class="form-control" id="file">
+                    </div>
+
+
+                    <div class="error">{{ .ErrorText }}</div>
+
+                    <input type="submit" class="btn btn-info" value="Create post">
+                    <input type="reset" class="btn btn-info">
+                </fieldset>
+            </form>
+        </div>
+    </body>
+
+</html>

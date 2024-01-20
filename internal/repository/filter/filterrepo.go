@@ -24,7 +24,7 @@ func NewFilterRepo(db *sql.DB) *FilterRepo {
 
 func (f *FilterRepo) GetUserPostsById(id int) ([]model.Post, error) {
 	query := `
-	SELECT p.Id, p.Name, p.Text, p.CreationTime, p.UserId, u.Username
+	SELECT p.Id, p.Name, p.Text, p.CreationTime, p.UserId, u.Username, p.ImagePath
 	FROM Post p
 	JOIN Users u ON p.UserId = u.Id
 	WHERE p.UserId = $1
@@ -40,7 +40,7 @@ func (f *FilterRepo) GetUserPostsById(id int) ([]model.Post, error) {
 
 	for rows.Next() {
 		var post model.Post
-		if err := rows.Scan(&post.Id, &post.Name, &post.Text, &post.CreationTime, &post.UserId, &post.Username); err != nil {
+		if err := rows.Scan(&post.Id, &post.Name, &post.Text, &post.CreationTime, &post.UserId, &post.Username, &post.PhotoPath); err != nil {
 			return nil, err
 		}
 
@@ -64,7 +64,7 @@ func (f *FilterRepo) GetPostsByCategory(categories []int) ([]model.Post, error) 
 	}
 
 	query := fmt.Sprintf(`
-    SELECT p.Id, p.Name, p.Text, p.CreationTime, p.UserId, u.Username, 
+    SELECT p.Id, p.Name, p.Text, p.CreationTime, p.UserId, u.Username, p.ImagePath,
            GROUP_CONCAT(c.Name) as Categories
     FROM Post p
     JOIN Users u ON p.UserId = u.Id
@@ -88,7 +88,7 @@ func (f *FilterRepo) GetPostsByCategory(categories []int) ([]model.Post, error) 
 
 	for rows.Next() {
 		var post model.Post
-		if err := rows.Scan(&post.Id, &post.Name, &post.Text, &post.CreationTime, &post.UserId, &post.Username, &post.Categories); err != nil {
+		if err := rows.Scan(&post.Id, &post.Name, &post.Text, &post.CreationTime, &post.UserId, &post.Username, &post.PhotoPath, &post.Categories); err != nil {
 			return nil, err
 		}
 
@@ -104,7 +104,7 @@ func (f *FilterRepo) GetPostsByCategory(categories []int) ([]model.Post, error) 
 
 func (f *FilterRepo) GetUsersLikedPost(userId int) ([]model.Post, error) {
 	query := `
-	SELECT p.Id, p.Name, p.Text, p.CreationTime, p.UserId, u.Username
+	SELECT p.Id, p.Name, p.Text, p.CreationTime, p.UserId, u.Username, p.ImagePath
 	FROM Post p
 	JOIN Users u ON p.UserId = u.Id
 	JOIN Grade g ON p.Id = g.PostId
@@ -121,7 +121,7 @@ func (f *FilterRepo) GetUsersLikedPost(userId int) ([]model.Post, error) {
 
 	for rows.Next() {
 		var post model.Post
-		if err := rows.Scan(&post.Id, &post.Name, &post.Text, &post.CreationTime, &post.UserId, &post.Username); err != nil {
+		if err := rows.Scan(&post.Id, &post.Name, &post.Text, &post.CreationTime, &post.UserId, &post.Username, &post.PhotoPath); err != nil {
 			return nil, err
 		}
 

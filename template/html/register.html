@@ -1,76 +1,75 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/template/css/register.css">
-<title>Registration</title>
-</head>
-<style>
-    .password-container {
-        position: relative;
-        display: flex;
-        align-items: center; 
-    }
-    
-    #passwordCriteria {
-        display: none;
-        position: absolute;
-        left: 100%;
-        margin-left: 10px;
-        white-space: nowrap;
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 10px;
-        width: auto;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        z-index: 1000;
-    }
-    
-    #passwordCriteria li {
-        font-size: 12px;
-        color: #333;
-    }
-    
-    #password:hover + #passwordCriteria {
-        display: block;
-    }
+    <title>Registration</title>
+    <style>
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        #passwordCriteria {
+            display: none;
+            position: absolute;
+            left: 100%;
+            margin-left: 10px;
+            white-space: nowrap;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            width: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+
+        #passwordCriteria li {
+            font-size: 12px;
+            color: #333;
+        }
+
+        #password:hover+#passwordCriteria {
+            display: block;
+        }
     </style>
-    
+</head>
+
 <body>
-    <canvas id="canvas">Canvas not supported.</canvas>
-    <div id="filter"></div>
+   
     <header class="header">
         <a class="header__link" href="/">Back</a>
         <h1 class="header-title">Cinema Forum</h1>
     </header>
     <main>
         <div class="form__signup">
-<form action="/signup" method="post">
-    <label for="username"><b>Username</b></label>
-    <input type="username" placeholder="Enter username" name="username" id="username" required>
-    <label for="email"><b>Email</b></label>
-    <input type="email" placeholder="Enter Email" name="email" id="email" required>
+            <form action="/signup" method="post">
+                <label for="username"><b>Username</b></label>
+                <input type="username" placeholder="Enter username" name="username" id="username" required>
+                <label for="email"><b>Email</b></label>
+                <input type="email" placeholder="Enter Email" name="email" id="email" required>
 
-    <label for="password"><b>Password</b></label>
-    <div class="password-container">
-        <input type="password" placeholder="Enter Password" name="password" id="password" required>
-        <ul id="passwordCriteria">
-            <li>At least 8 characters long</li>
-            <li>Includes uppercase and lowercase letters</li>
-            <li>Contains a number</li>
-            <li>Has a special character (e.g., !@#$%^&*)</li>
-        </ul>
-    </div>
-    <div class="error">{{ .ErrorText }}</div>
-    <button id="submitButton">Submit</button>
-</form>
-</div>
-</main>
+                <label for="password"><b>Password</b></label>
+                <div class="password-container">
+                    <input type="password" placeholder="Enter Password" name="password" id="password" required>
+                    <ul id="passwordCriteria">
+                        <li>At least 8 characters long</li>
+                        <li>Includes uppercase and lowercase letters</li>
+                        <li>Contains a number</li>
+                        <li>Has a special character (e.g., !@#$%^&*)</li>
+                    </ul>
+                </div>
+                <div class="error">{{ .ErrorText }}</div>
+                <button id="submitButton">Submit</button>
+            </form>
+        </div>
+    </main>
 
-<script src="/template/js/script.js"></script>
-
-<!-- <canvas id="canvas">Canvas not supported.</canvas> -->
+    
 </body>
-</html> 
+
+</html>
