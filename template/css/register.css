@@ -121,3 +121,49 @@ main {
 .error {
   color: red;
 }
+
+
+
+.btn_git {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.btn_git {
+  background-color: #e50914;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 30px; 
+  border-radius: 5px;
+  font-size: 20px;
+  border: 8px solid #e50914; 
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.register_online {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.btn_git img {
+  width: 20px;
+  margin-bottom: 2px;
+  margin-right: 10px;
+}
+
+.btn-git:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+
+
+@media (max-width: 576px) {
+  .container {
+    margin-top: 15%;
+  }
+}

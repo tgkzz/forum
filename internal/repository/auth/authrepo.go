@@ -27,9 +27,9 @@ func NewAuthorizationRepo(db *sql.DB) *AuthRepo {
 // CRITICAL ERROR: AUTH SERVICE DOES NOT RECORD USERID + IT DELETES ALL RECORD ABOUT OTHER SESSION
 
 func (a *AuthRepo) CreateUser(u model.User) error {
-	query := `Insert into users (Username, Email, Password) Values ($1, $2, $3)`
+	query := `Insert into users (Username, Email, Password, AuthMode) Values ($1, $2, $3, $4)`
 
-	_, err := a.DB.Exec(query, u.Username, u.Email, u.Password)
+	_, err := a.DB.Exec(query, u.Username, u.Email, u.Password, u.AuthMethod)
 	if err != nil {
 		return err
 	}
@@ -76,7 +76,7 @@ func (a *AuthRepo) GetUserByUsername(username string) (model.User, error) {
 
 	Result := model.User{}
 
-	err := a.DB.QueryRow(query, username).Scan(&Result.Id, &Result.Email, &Result.Username, &Result.Password)
+	err := a.DB.QueryRow(query, username).Scan(&Result.Id, &Result.Email, &Result.Username, &Result.Password, &Result.AuthMethod)
 
 	return Result, err
 }

@@ -41,8 +41,10 @@ func (s *AuthService) CreateUser(user model.User) error {
 
 	user.Email = strings.ToLower(user.Email)
 
-	if err := dataValidation(user); err != nil {
-		return err
+	if user.AuthMethod == "simple" {
+		if err := dataValidation(user); err != nil {
+			return err
+		}
 	}
 
 	user.Password, err = hashPassword(user.Password)
@@ -80,6 +82,7 @@ func (s *AuthService) DeleteSessionByToken(token string) error {
 func (s *AuthService) CreateSession(UserId int) (string, error) {
 	if err := s.repo.DeleteSessionByUserId(UserId); err != nil {
 		if err != sql.ErrNoRows {
+			log.Print("here1")
 			return "", err
 		}
 	}

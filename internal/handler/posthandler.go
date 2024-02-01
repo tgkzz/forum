@@ -65,7 +65,7 @@ func (h *Handler) createpost(w http.ResponseWriter, r *http.Request) {
 		// image part
 		file, header, err := r.FormFile("photo")
 		if err != nil {
-			ErrorHandler(w, http.StatusInternalServerError)
+			ErrorHandler(w, http.StatusBadRequest)
 			return
 		}
 		defer file.Close()

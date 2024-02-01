@@ -74,9 +74,10 @@ func (h *Handler) signup(w http.ResponseWriter, r *http.Request) {
 		}
 	case "POST":
 		user := &model.User{
-			Username: r.FormValue("username"),
-			Email:    r.FormValue("email"),
-			Password: r.FormValue("password"),
+			Username:   r.FormValue("username"),
+			Email:      r.FormValue("email"),
+			Password:   r.FormValue("password"),
+			AuthMethod: "simple",
 		}
 
 		if err := h.service.CreateUser(*user); err != nil {

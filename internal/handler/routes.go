@@ -23,6 +23,17 @@ func (h *Handler) Routes() http.Handler {
 	mux.HandleFunc("/signin", h.signin)
 	mux.HandleFunc("/signout", h.AuthMiddleware(h.signout))
 
+	// GitHub auth handler
+	mux.HandleFunc("/signin/github", githubLogin)
+	mux.HandleFunc("/callback-github", h.githubCallback)
+	http.HandleFunc("/loggedin", func(w http.ResponseWriter, r *http.Request) {
+		h.loggedinHandler(w, r, "")
+	})
+
+	//Google auth handler
+	mux.HandleFunc("/signin/google", googleLogin)
+	mux.HandleFunc("/callback-google", h.googleCallback)
+
 	// filter handler
 	mux.HandleFunc("/filter", h.filterByCategory)
 	mux.HandleFunc("/myposts", h.AuthMiddleware(h.myposts))
