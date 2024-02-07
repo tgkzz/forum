@@ -16,7 +16,7 @@ func googleLogin(w http.ResponseWriter, r *http.Request) {
 
 	params := url.Values{}
 	params.Add("client_id", model.GOOGLECLIENTID)
-	params.Add("redirect_uri", "http://localhost:4000/callback-google")
+	params.Add("redirect_uri", "https://localhost:4000/callback-google")
 	params.Add("scope", "https://www.googleapis.com/auth/userinfo.profile")
 	params.Add("response_type", "code")
 
@@ -31,7 +31,7 @@ func (h *Handler) googleCallback(w http.ResponseWriter, r *http.Request) {
 	data.Add("code", code)
 	data.Add("client_id", model.GOOGLECLIENTID)
 	data.Add("client_secret", model.GOOGLECLIENTSECRET)
-	data.Add("redirect_uri", "http://localhost:4000/callback-google")
+	data.Add("redirect_uri", "https://localhost:4000/callback-google")
 	data.Add("grant_type", "authorization_code")
 
 	resp, err := http.PostForm(tokenURL, data)
@@ -117,6 +117,7 @@ func (h *Handler) googleCallback(w http.ResponseWriter, r *http.Request) {
 			Value:    token,
 			Expires:  time.Now().Add(2 * time.Hour),
 			HttpOnly: true,
+			Secure:   true,
 		})
 
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -134,6 +135,7 @@ func (h *Handler) googleCallback(w http.ResponseWriter, r *http.Request) {
 			Value:    token,
 			Expires:  time.Now().Add(2 * time.Hour),
 			HttpOnly: true,
+			Secure:   true,
 		})
 
 		http.Redirect(w, r, "/", http.StatusSeeOther)

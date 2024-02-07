@@ -1,160 +1,98 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial Black', Helvetica, Verdana, monospace, sans-serif;
-    letter-spacing: 0.2rem;
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #000;
     color: #fff;
-    overflow: hidden;
-    background: #000; /* Changed background color to black */
+    margin: 0;
 }
 
 header {
-    position: fixed;
-    width: 100%;
-    height: 70px;
-    background-color: transparent; /* Removed background color */
-    z-index: 3;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
 }
 
 .header__link {
     text-decoration: none;
     color: #fff;
-    font-size: 1rem;
-}
-
-.header__link:hover {
-    text-decoration: underline;
+    font-size: 1.2rem;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .header-title {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     color: #fff;
-    text-align: center;
-    margin-top: -10px;
-    flex-grow: 1;
+    margin: 0;
 }
 
-/* Стили для кнопки "Back" */
-.header-back-btn {
-    background-color: transparent; /* Removed background color */
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.header-back-btn:hover {
-    color: #e50914; /* Netflix red */
-}
-/* Стили для формы .form-create */
 .container {
-    max-width: 600px; /* Adjusted for responsiveness */
-    width: 100%;
-    margin: 100px auto;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.5); /* Darkened form background */
-    border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Adjusted box-shadow */
-    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .form-create {
-    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    padding: 50px;
+    width: 400px;
+    font-size: 18px;
 }
 
-.form-create fieldset {
+fieldset {
     border: none;
 }
 
-.form-create legend {
-    font-size: 1.8rem;
+legend {
+    font-size: 1.5rem;
     margin-bottom: 20px;
-    color: #fff;
 }
 
-/* Стилизация чекбоксов */
 .checkbox-inline {
-    margin-right: 10px;
+    margin-right: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
     color: #fff;
 }
 
-/* Стилизация полей ввода и текстовых областей */
-.form-control {
-    background: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
-    color: #333;
-    border-radius: 10px;
-    padding: 10px;
-    border: 2px solid #ccc;
-    margin-bottom: 15px;
+input[type="text"],
+textarea,
+input[type="file"] {
     width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
     box-sizing: border-box;
-}
-
-/* Стилизация кнопок */
-.form-create .btn {
-    background-color: #e50914; /* Netflix red */
+    font-size: 17px;
+    border: 1px solid #333;
+    background-color: #1c1c1c;
     color: #fff;
-    padding: 10px 15px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
-.form-create .btn:hover {
-    background-color: #fff;
-    color: #000;
+.error {
+    color: #e50914;
+    margin-top: 15px;
 }
 
-/* Стили для предупреждающего сообщения */
-.alert-warning {
-    background-color: #ffdddd;
-    color: red;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-}
-
-/* Базовые стили кнопки */
 .btn {
-    padding: 10px 15px;
-    background-color: #e50914; /* Netflix red */
+    background: #e50914;
     color: #fff;
+    padding: 15px;
+    margin-right: 10px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    outline: none;
-    font-size: 15px;
-}
-
-/* Анимация при наведении */
-.btn:hover {
-    background-color: #fff;
-    color: #000;
-    transform: scale(1.05);
-}
-
-/* Анимация при нажатии */
-.btn:active {
-    transform: scale(0.95);
-}
-
-.form-group, .form-control, .btn {
-    margin-bottom: 15px;
-}
-
-@media only screen and (max-width: 768px) {
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .header-title {
-        margin-top: 0; /* Adjusted margin-top for smaller screens */
-    }
+    font-size: 1.2rem;
 }

@@ -65,6 +65,7 @@ func (h *Handler) signup(w http.ResponseWriter, r *http.Request) {
 		ErrorHandler(w, http.StatusInternalServerError)
 		return
 	}
+
 	switch r.Method {
 	case "GET":
 
@@ -173,6 +174,7 @@ func (h *Handler) signin(w http.ResponseWriter, r *http.Request) {
 			Value:    token,
 			Expires:  time.Now().Add(2 * time.Hour),
 			HttpOnly: true,
+			Secure:   true,
 		})
 
 		http.Redirect(w, r, "/", http.StatusSeeOther)

@@ -3,11 +3,13 @@ package handler
 import "forum/internal/service"
 
 type Handler struct {
-	service *service.Service
+	service     *service.Service
+	rateLimiter *RateLimiter
 }
 
-func NewHandler(service *service.Service) *Handler {
+func NewHandler(service *service.Service, limiter *RateLimiter) *Handler {
 	return &Handler{
-		service: service,
+		service:     service,
+		rateLimiter: limiter,
 	}
 }

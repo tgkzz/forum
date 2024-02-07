@@ -18,35 +18,35 @@ func (h *Handler) Routes() http.Handler {
 	mux.Handle("/template/images/", http.StripPrefix("/template/images/", images))
 
 	// auth handler
-	mux.HandleFunc("/", h.home)
-	mux.HandleFunc("/signup", h.signup)
-	mux.HandleFunc("/signin", h.signin)
-	mux.HandleFunc("/signout", h.AuthMiddleware(h.signout))
+	mux.HandleFunc("/", h.rateLimiter.RateLimitMiddleware(h.home))
+	mux.HandleFunc("/signup", h.rateLimiter.RateLimitMiddleware(h.signup))
+	mux.HandleFunc("/signin", h.rateLimiter.RateLimitMiddleware(h.signin))
+	mux.HandleFunc("/signout", h.rateLimiter.RateLimitMiddleware(h.AuthMiddleware(h.signout)))
 
 	// GitHub auth handler
-	mux.HandleFunc("/signin/github", githubLogin)
-	mux.HandleFunc("/callback-github", h.githubCallback)
-	http.HandleFunc("/loggedin", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/signin/github", h.rateLimiter.RateLimitMiddleware(githubLogin))
+	mux.HandleFunc("/callback-github", h.rateLimiter.RateLimitMiddleware(h.githubCallback))
+	http.HandleFunc("/loggedin", h.rateLimiter.RateLimitMiddleware(func(w http.ResponseWriter, r *http.Request) {
 		h.loggedinHandler(w, r, "")
-	})
+	}))
 
 	//Google auth handler
-	mux.HandleFunc("/signin/google", googleLogin)
-	mux.HandleFunc("/callback-google", h.googleCallback)
+	mux.HandleFunc("/signin/google", h.rateLimiter.RateLimitMiddleware(googleLogin))
+	mux.HandleFunc("/callback-google", h.rateLimiter.RateLimitMiddleware(h.googleCallback))
 
 	// filter handler
-	mux.HandleFunc("/filter", h.filterByCategory)
-	mux.HandleFunc("/myposts", h.AuthMiddleware(h.myposts))
-	mux.HandleFunc("/likedposts", h.AuthMiddleware(h.filterByLikes))
+	mux.HandleFunc("/filter", h.rateLimiter.RateLimitMiddleware(h.filterByCategory))
+	mux.HandleFunc("/myposts", h.rateLimiter.RateLimitMiddleware(h.AuthMiddleware(h.myposts)))
+	mux.HandleFunc("/likedposts", h.rateLimiter.RateLimitMiddleware(h.AuthMiddleware(h.filterByLikes)))
 
 	// post handler
-	mux.HandleFunc("/posts/", h.getpost)
-	mux.HandleFunc("/posts/create", h.AuthMiddleware(h.createpost))
-	mux.HandleFunc("/posts/likes", h.AuthMiddleware(h.addgrade))
+	mux.HandleFunc("/posts/", h.rateLimiter.RateLimitMiddleware(h.getpost))
+	mux.HandleFunc("/posts/create", h.rateLimiter.RateLimitMiddleware(h.AuthMiddleware(h.createpost)))
+	mux.HandleFunc("/posts/likes", h.rateLimiter.RateLimitMiddleware(h.AuthMiddleware(h.addgrade)))
 	// mux.HandleFunc("", h.AuthMiddleware(h.createcomment))
 
 	// health handler
-	mux.HandleFunc("/health", h.health)
+	mux.HandleFunc("/health", h.rateLimiter.RateLimitMiddleware(h.health))
 
 	return h.Handles(mux)
 }

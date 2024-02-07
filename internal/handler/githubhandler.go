@@ -12,13 +12,29 @@ import (
 )
 
 func githubLogin(w http.ResponseWriter, r *http.Request) {
-	redirectURL := fmt.Sprintf(
-		"https://github.com/login/oauth/authorize?client_id=%s&redirect_uri=%s",
-		model.CLIENT_ID,
-		"http://localhost:4000/callback-github",
-	)
+	// redirectURL := fmt.Sprintf(
+	// 	"https://github.com/login/oauth/authorize?client_id=%s&redirect_uri=%s",
+	// 	model.CLIENT_ID,
+	// 	"https://localhost:4000/callback-github",
+	// )
+	// URL, err := url.Parse("https://github.com/login/oauth/authorize")
+	// if err != nil {
+	// 	log.Print(err)
+	// 	ErrorHandler(w, http.StatusInternalServerError)
+	// 	return
+	// }
 
-	http.Redirect(w, r, redirectURL, 301)
+	// params := url.Values{}
+	// params.Add("client_id", model.CLIENT_ID)
+	// params.Add("redirect_uri", "https://localhost:4000/callback-github")
+
+	// URL.RawQuery = params.Encode()
+
+	// url := URL.String()
+
+	url := "https://github.com/login/oauth/authorize?client_id=a011e0d43c54190c958c&redirect_uri=https://localhost:4000/callback-github"
+
+	http.Redirect(w, r, url, 302)
 }
 
 func (h *Handler) githubCallback(w http.ResponseWriter, r *http.Request) {
@@ -104,6 +120,7 @@ func (h *Handler) loggedinHandler(w http.ResponseWriter, r *http.Request, github
 			Value:    token,
 			Expires:  time.Now().Add(2 * time.Hour),
 			HttpOnly: true,
+			Secure:   true,
 		})
 
 		http.Redirect(w, r, "/", http.StatusSeeOther)

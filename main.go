@@ -7,24 +7,28 @@ import (
 	"forum/internal/server"
 	"forum/internal/service"
 	"log"
+	"time"
 )
 
 func main() {
-	config, err := config.OpenConfig()
+	cfg, err := config.OpenConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	db, err := repository.NewSqlite(config)
+	db, err := repository.NewSqlite(cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	repo := repository.NewRepository(db)
+	// change these variables in order to protect from DDOS attack
+	limiter := handler.NewRateLimiter(40, 100*time.Millisecond)
 
-	service := service.NewService(repo)
+	r := repository.NewRepository(db)
 
-	handler := handler.NewHandler(service)
+	s := service.NewService(r)
 
-	log.Fatal(server.Runserver(config, handler.Routes()))
+	h := handler.NewHandler(s, limiter)
+
+	log.Fatal(server.Runserver(cfg, h.Routes()))
 }
